@@ -1,168 +1,266 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BLD Santa Monica | Investor Pitch</title>
-  <meta name="description" content="Investor pitch site for BLD Santa Monica: market opportunity, unit economics, rollout plan, and capital ask.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BLD Santa Monica</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="background-orb orb-one" aria-hidden="true"></div>
-  <div class="background-orb orb-two" aria-hidden="true"></div>
-
-  <header class="site-header">
-    <a class="brand" href="#top" aria-label="BLD Santa Monica home">
-      <span class="brand-mark">BLD</span>
-      <span class="brand-text">Santa Monica</span>
-    </a>
-    <nav>
-      <a href="#opportunity">Opportunity</a>
-      <a href="#economics">Economics</a>
-      <a href="#timeline">Timeline</a>
-      <a href="#ask">Ask</a>
-    </nav>
+  <!-- Navigation Bar -->
+  <header class="nav-header">
+    <div class="nav-pill">
+      <div class="brand">
+        <h2>
+          <span class="bld">
+            B<span class="line-before"></span>L<span class="line-after"></span>D
+          </span>
+          <span class="santa-monica">SANTA MONI<span class="gold-ca">CA</span></span>
+          <a href="https://www.google.com/maps/place/120+Santa+Monica+Blvd,+Santa+Monica,+CA+90401" target="_blank" class="address">📍 120 Santa Monica Blvd</a>
+        </h2>
+      </div>
+      <nav class="nav-links">
+        <a href="#menus" class="nav-link" data-drawer="menus-drawer">Menus</a>
+        <a href="#contact" class="nav-link" data-drawer="contact-drawer">Contact</a>
+        <a href="#share" class="nav-link" data-drawer="share-drawer">Share</a>
+        <span class="gold-line"></span>
+        <a href="https://instagram.com" class="social-icon"><img src="images/igicon.png" alt="Instagram"></a>
+      </nav>
+    </div>
   </header>
+  
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-overlay">
+      <h1>Welcome to <span class="hero-bld">BLD</span></h1>
+      <p>Simple Choices, Exceptional Quality</p>
+      <div class="divider"></div>
+      <a href="#menus" class="cta-button nav-link" data-drawer="menus-drawer">View Our Menus</a>
+    </div>
+  </section>
 
-  <main id="top">
-    <section class="hero reveal">
-      <p class="eyebrow">Investment Preview</p>
-      <h1>All-day coastal dining with premium throughput.</h1>
-      <p class="lead">BLD Santa Monica is designed as a high-margin, all-day neighborhood destination with tourist flow upside and local repeat power.</p>
-      <div class="cta-row">
-        <a class="button primary" href="#ask">View Capital Ask</a>
-        <a class="button ghost" href="#economics">See Unit Model</a>
+  <!-- Menus Drawer -->
+  <div class="drawer" id="menus-drawer">
+    <span class="close-btn">×</span>
+    <div class="drawer-content">
+      <!-- Section 1: A Simple Approach -->
+      <div class="menu-section section-1">
+        <h2>A Simple Approach to Great Food</h2>
+        <div class="divider"></div>
+        <p>At BLD Diner, we keep things simple—three meals, three set prices, and a focus on quality. Whether it’s breakfast, lunch, or dinner, you choose from a curated selection of classic dishes, each made with premium ingredients and expert techniques. No overwhelming menus, no complicated decisions—just great food, made right, every time.</p>
       </div>
-    </section>
 
-    <section class="metrics reveal" aria-label="Key performance targets">
-      <article>
-        <p class="metric-value">$2.6M</p>
-        <p class="metric-label">Projected Year 2 AUV</p>
-      </article>
-      <article>
-        <p class="metric-value">19%</p>
-        <p class="metric-label">Target Store-Level EBITDA</p>
-      </article>
-      <article>
-        <p class="metric-value">13 mo</p>
-        <p class="metric-label">Ramp to Steady-State</p>
-      </article>
-      <article>
-        <p class="metric-value">$950K</p>
-        <p class="metric-label">Initial Capital Raise</p>
-      </article>
-    </section>
+      <!-- Section 2: Quality, Value, Simplicity and Meals -->
+      <div class="menu-section section-2">
+        <!-- Quality, Value, Simplicity -->
+        <div class="menu-values">
+          <div class="value-item">
+            <h3>QUALITY</h3>
+            <p>By focusing on a curated selection of dishes, we ensure each plate meets our highest standards.</p>
+          </div>
+          <div class="value-item">
+            <h3>VALUE</h3>
+            <p>Our set prices include premium ingredients and expert preparation.</p>
+          </div>
+          <div class="value-item">
+            <h3>SIMPLICITY</h3>
+            <p>No decision fatigue – just relax and enjoy a thoughtfully crafted dining experience.</p>
+          </div>
+        </div>
 
-    <section id="opportunity" class="panel reveal">
-      <h2>Market Opportunity</h2>
-      <div class="two-col">
-        <p>Santa Monica has consistent daytime density and high discretionary spend. BLD captures breakfast commuters, lunch professionals, and dinner leisure demand under one operational model.</p>
-        <p>The concept leverages a compact menu architecture with prep overlap to drive speed of service, labor efficiency, and a higher mix of high-margin beverages.</p>
+        <!-- Meals -->
+        <div class="menu-meals">
+          <div class="meal-item">
+            <img src="images/breakfast.jpg" alt="Breakfast">
+            <div class="meal-text">
+              <h3>Breakfast</h3>
+              <p>$20 per person</p>
+            </div>
+          </div>
+          <div class="meal-item">
+            <img src="images/lunch.jpg" alt="Lunch">
+            <div class="meal-text">
+              <h3>Lunch</h3>
+              <p>$25 per person</p>
+            </div>
+          </div>
+          <div class="meal-item">
+            <img src="images/dinner.jpg" alt="Dinner">
+            <div class="meal-text">
+              <h3>Dinner</h3>
+              <p>$35 per person</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <ul class="bullet-list">
-        <li>Foot traffic corridors within 8 minutes of beach and office clusters</li>
-        <li>Daypart diversification reduces volatility versus single-occasion concepts</li>
-        <li>Brandable format for Westside replication after flagship traction</li>
-      </ul>
-    </section>
 
-    <section id="economics" class="panel reveal">
-      <h2>Unit Economics Snapshot</h2>
-      <div class="table-wrap" role="region" aria-label="Unit economics assumptions">
-        <table>
-          <thead>
-            <tr>
-              <th>Line Item</th>
-              <th>Target</th>
-              <th>Notes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Average Check</td>
-              <td>$31.50</td>
-              <td>Blended across all dayparts</td>
-            </tr>
-            <tr>
-              <td>COGS</td>
-              <td>28.0%</td>
-              <td>Menu engineered for ingredient overlap</td>
-            </tr>
-            <tr>
-              <td>Labor</td>
-              <td>29.5%</td>
-              <td>Cross-trained team model</td>
-            </tr>
-            <tr>
-              <td>Occupancy</td>
-              <td>10.8%</td>
-              <td>Lease + CAM at underwriting target</td>
-            </tr>
-            <tr>
-              <td>Store-Level EBITDA</td>
-              <td>19.0%</td>
-              <td>At mature run-rate</td>
-            </tr>
-          </tbody>
-        </table>
+      <!-- Section 3: Footer -->
+      <div class="menu-section section-3">
+        <div class="menu-footer">
+          <img src="images/bldlogo.png" alt="BLD Santa Monica Logo" class="menu-logo">
+          <div class="menu-info">
+            <div>
+              <h3>HOURS</h3>
+              <p>Breakfast: 5 AM – 10 AM</p>
+              <p>Lunch: 10 AM – 3 PM</p>
+              <p>Dinner: 3 PM – 9 PM</p>
+              <p>Open 7 days a week</p>
+            </div>
+            <div>
+              <h3>LOCATION</h3>
+              <p><a href="https://www.google.com/maps/place/120+Santa+Monica+Blvd,+Santa+Monica,+CA+90401" target="_blank" class="contact-link">120 Santa Monica Blvd<br>Santa Monica, CA 90401</a></p>
+              <p><a href="tel:+14248675309" class="contact-link">Tel: (424) 867-5309</a></p>
+            </div>
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
+  </div>
 
-    <section id="timeline" class="panel reveal">
-      <h2>Rollout Timeline</h2>
-      <ol class="timeline">
-        <li>
-          <p class="phase">Phase 1</p>
-          <h3>Pre-Launch (0-3 months)</h3>
-          <p>Finalize site, complete permitting, and lock vendor contracts.</p>
-        </li>
-        <li>
-          <p class="phase">Phase 2</p>
-          <h3>Open + Optimize (4-12 months)</h3>
-          <p>Launch membership offers, refine staffing mix, and tune menu contribution margin.</p>
-        </li>
-        <li>
-          <p class="phase">Phase 3</p>
-          <h3>Replication Prep (12-18 months)</h3>
-          <p>Codify operating playbook and identify second location pipeline.</p>
-        </li>
-      </ol>
-    </section>
+  <!-- Contact Drawer -->
+  <div class="drawer" id="contact-drawer">
+    <span class="close-btn">×</span>
+    <div class="drawer-content">
+      <h2>Contact Us</h2>
+      <div class="divider"></div>
 
-    <section id="ask" class="panel ask reveal">
-      <h2>Capital Ask</h2>
-      <p>Seeking <strong>$950,000</strong> to fund buildout, opening inventory, and launch marketing with a 14-month operating runway buffer.</p>
-      <div class="ask-grid">
-        <article>
-          <h3>Use of Funds</h3>
-          <ul class="bullet-list compact">
-            <li>Buildout + Equipment: 58%</li>
-            <li>Pre-opening + Hiring: 18%</li>
-            <li>Working Capital: 24%</li>
-          </ul>
-        </article>
-        <article>
-          <h3>Investor Materials</h3>
-          <ul class="bullet-list compact">
-            <li>Detailed 36-month forecast</li>
-            <li>Location scorecard + comps</li>
-            <li>Brand expansion thesis</li>
-          </ul>
-        </article>
+      <!-- Contact Sections -->
+      <div class="contact-sections">
+        <!-- Left Column: Visit Us and Share Your Experience -->
+        <div class="contact-column">
+          <!-- Visit Us Section -->
+          <div class="contact-box">
+            <h3>Visit Us</h3>
+            <p><strong>Address:</strong><br>
+              <a href="https://www.google.com/maps/place/120+Santa+Monica+Blvd,+Santa+Monica,+CA+90401" target="_blank" class="contact-link">120 Santa Monica Blvd<br>Santa Monica, CA 90401</a>
+            </p>
+            <p><strong>Phone:</strong><br>
+              <a href="tel:+14248675309" class="contact-link">(424) 867-5309</a>
+            </p>
+            <p><strong>Email:</strong><br>
+              <a href="mailto:info@bldsantamonica.com" class="contact-link">info@bldsantamonica.com</a>
+            </p>
+          </div>
+
+          <!-- Share Your Experience Section -->
+          <div class="contact-box">
+            <h3>Share Your Experience</h3>
+            <p>Follow us on social media and tag your posts with <strong>#BLDSantaMonica</strong>!</p>
+            <p>
+              <a href="https://instagram.com" target="_blank" class="social-icon">
+                <img src="images/igicon.png" alt="Instagram">
+              </a>
+            </p>
+          </div>
+        </div>
+
+        <!-- Right Column: Give Us Feedback -->
+        <div class="contact-column">
+          <div class="contact-box feedback-box">
+            <h3>Give Us Feedback</h3>
+            <form id="feedback-form">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" placeholder="Your Name" aria-label="Your Name" required>
+              
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="Your Email" aria-label="Your Email" required>
+              
+              <label for="feedback">Your Feedback</label>
+              <textarea id="feedback" name="feedback" placeholder="Your Feedback" aria-label="Your Feedback" required></textarea>
+              
+              <button type="submit">Submit Feedback</button>
+            </form>
+            <p id="form-message" class="form-message" style="display: none; color: green; margin-top: 1em;">Thank you for your feedback!</p>
+          </div>
+        </div>
       </div>
-      <a class="button primary" href="mailto:investors@bldsantamonica.com">Request Full Deck</a>
-    </section>
-  </main>
 
-  <footer>
-    <p>BLD Santa Monica Investor Preview</p>
-    <p>&copy; <span id="year"></span> BLD Santa Monica</p>
+      <!-- Footer Section -->
+      <div class="menu-footer">
+        <img src="images/bldlogo.png" alt="BLD Santa Monica Logo" class="menu-logo">
+        <div class="menu-info">
+          <div>
+            <h3>HOURS</h3>
+            <p>Breakfast: 5 AM – 10 AM</p>
+            <p>Lunch: 10 AM – 3 PM</p>
+            <p>Dinner: 3 PM – 9 PM</p>
+            <p>Open 7 days a week</p>
+          </div>
+          <div>
+            <h3>LOCATION</h3>
+            <p><a href="https://www.google.com/maps/place/120+Santa+Monica+Blvd,+Santa+Monica,+CA+90401" target="_blank" class="contact-link">120 Santa Monica Blvd<br>Santa Monica, CA 90401</a></p>
+            <p><a href="tel:+14248675309" class="contact-link">Tel: (424) 867-5309</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Share Drawer -->
+  <div class="drawer" id="share-drawer">
+    <span class="close-btn">×</span>
+    <div class="drawer-content">
+      <h2>Share Your Experience</h2>
+      <div class="divider"></div>
+      <p>Follow us on social media and tag your posts with <strong>#BLDSantaMonica</strong>!</p>
+
+      <!-- Instagram Posts -->
+      <div class="insta-posts">
+        <div class="insta-post">
+          <img src="images/eggsbenedict.jpg" alt="eggsbenedict">
+          <div class="insta-caption">
+            <p><strong>@Hal</strong> Best eggs benedict in Santa Monica! 🥚</p>
+          </div>
+        </div>
+        <div class="insta-post">
+          <img src="images/chili.jpg" alt="chili">
+          <div class="insta-caption">
+            <p><strong>@Megan</strong> This chili bowl hits different! 🌶️</p>
+          </div>
+        </div>
+        <div class="insta-post">
+          <img src="images/porkchops.jpg" alt="porkchops">
+          <div class="insta-caption">
+            <p><strong>@SantaMonicaFoodie</strong> The pork chop is always perfect! 😋</p>
+          </div>
+        </div>
+        <div class="insta-post">
+          <img src="images/potatopancakes.jpg" alt="potatopancakes">
+          <div class="insta-caption">
+            <p><strong>@LAFoodLover</strong> When the potato pancakes are THIS good! 🤤</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Section -->
+      <div class="menu-footer">
+        <img src="images/bldlogo.png" alt="BLD Santa Monica Logo" class="menu-logo">
+        <div class="menu-info">
+          <div>
+            <h3>HOURS</h3>
+            <p>Breakfast: 5 AM – 10 AM</p>
+            <p>Lunch: 10 AM – 3 PM</p>
+            <p>Dinner: 3 PM – 9 PM</p>
+            <p>Open 7 days a week</p>
+          </div>
+          <div>
+            <h3>LOCATION</h3>
+            <p><a href="https://www.google.com/maps/place/120+Santa+Monica+Blvd,+Santa+Monica,+CA+90401" target="_blank" class="contact-link">120 Santa Monica Blvd<br>Santa Monica, CA 90401</a></p>
+            <p><a href="tel:+14248675309" class="contact-link">Tel: (424) 867-5309</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p class="footer-left">© 2025 BLD Santa Monica</p>
+    <p class="footer-right">Designed by Justise Web Design</p>
   </footer>
 
+  <!-- Link to the external script.js file -->
   <script src="script.js"></script>
 </body>
 </html>
