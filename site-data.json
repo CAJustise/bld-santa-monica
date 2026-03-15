@@ -28,9 +28,9 @@
   "merchItems": [
     {
       "id": "default-tote",
-      "name": "BLD Tote",
-      "price": 25,
-      "image": "images/bldlogo.png"
+      "name": "BLD - Polo",
+      "price": 45,
+      "image": "images/polo.png"
     }
   ],
   "location": {
