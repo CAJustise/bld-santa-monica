@@ -8,7 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Navigation Bar -->
   <header class="nav-header">
     <div class="nav-pill">
       <div class="brand">
@@ -17,7 +16,7 @@
             B<span class="line-before"></span>L<span class="line-after"></span>D
           </span>
           <span class="santa-monica">SANTA MONI<span class="gold-ca">CA</span></span>
-          <a href="https://www.google.com/maps/place/120+Santa+Monica+Blvd,+Santa+Monica,+CA+90401" target="_blank" class="address">📍 120 Santa Monica Blvd</a>
+          <a id="header-address" href="https://www.google.com/maps/place/120+Santa+Monica+Blvd,+Santa+Monica,+CA+90401" target="_blank" class="address">📍 120 Santa Monica Blvd</a>
         </h2>
       </div>
       <nav class="nav-links">
@@ -26,39 +25,35 @@
         <a href="#investors" class="nav-link" data-drawer="investors-drawer">Investors</a>
         <a href="#share" class="nav-link" data-drawer="share-drawer">Share</a>
         <span class="gold-line"></span>
-        <a href="https://instagram.com" class="social-icon"><img src="images/igicon.png" alt="Instagram"></a>
+        <div id="nav-social-links" class="social-links-inline"></div>
       </nav>
     </div>
   </header>
-  
-  <!-- Hero Section -->
+
   <section class="hero">
     <div class="hero-overlay">
       <h1>Welcome to <span class="hero-bld">BLD</span></h1>
       <p>Simple Choices, Exceptional Quality</p>
       <div class="divider"></div>
       <a href="#menus" class="cta-button nav-link" data-drawer="menus-drawer">View Our Menus</a>
+      <div id="promo-banner" class="promo-banner" style="display:none;"></div>
     </div>
   </section>
 
-  <!-- Menus Drawer -->
   <div class="drawer" id="menus-drawer">
     <span class="close-btn">×</span>
     <div class="drawer-content">
-      <!-- Section 1: A Simple Approach -->
       <div class="menu-section section-1">
         <h2>A Simple Approach to Great Food</h2>
         <div class="divider"></div>
-        <p>At BLD Diner, we keep things simple—three meals, three set prices, and a focus on quality. Whether it’s breakfast, lunch, or dinner, you choose from a curated selection of classic dishes, each made with premium ingredients and expert techniques. No overwhelming menus, no complicated decisions—just great food, made right, every time.</p>
+        <p>At BLD Diner, we keep things simple - three meals, three set prices, and a focus on quality.</p>
       </div>
 
-      <!-- Section 2: Quality, Value, Simplicity and Meals -->
       <div class="menu-section section-2">
-        <!-- Quality, Value, Simplicity -->
         <div class="menu-values">
           <div class="value-item">
             <h3>QUALITY</h3>
-            <p>By focusing on a curated selection of dishes, we ensure each plate meets our highest standards.</p>
+            <p>We ensure each plate meets our highest standards.</p>
           </div>
           <div class="value-item">
             <h3>VALUE</h3>
@@ -66,52 +61,34 @@
           </div>
           <div class="value-item">
             <h3>SIMPLICITY</h3>
-            <p>No decision fatigue – just relax and enjoy a thoughtfully crafted dining experience.</p>
+            <p>No decision fatigue, just a thoughtful dining experience.</p>
           </div>
         </div>
 
-        <!-- Meals -->
-        <div class="menu-meals">
-          <div class="meal-item">
-            <img src="images/breakfast.jpg" alt="Breakfast">
-            <div class="meal-text">
-              <h3>Breakfast</h3>
-              <p>$20 per person</p>
-            </div>
-          </div>
-          <div class="meal-item">
-            <img src="images/lunch.jpg" alt="Lunch">
-            <div class="meal-text">
-              <h3>Lunch</h3>
-              <p>$25 per person</p>
-            </div>
-          </div>
-          <div class="meal-item">
-            <img src="images/dinner.jpg" alt="Dinner">
-            <div class="meal-text">
-              <h3>Dinner</h3>
-              <p>$35 per person</p>
-            </div>
-          </div>
-        </div>
+        <div id="menu-meals" class="menu-meals"></div>
       </div>
 
-      <!-- Section 3: Footer -->
+      <div class="menu-section section-2">
+        <h2>Merch</h2>
+        <div class="divider"></div>
+        <div id="merch-grid" class="merch-grid"></div>
+      </div>
+
       <div class="menu-section section-3">
         <div class="menu-footer">
           <img src="images/bldlogo.png" alt="BLD Santa Monica Logo" class="menu-logo">
           <div class="menu-info">
             <div>
               <h3>HOURS</h3>
-              <p>Breakfast: 5 AM – 10 AM</p>
-              <p>Lunch: 10 AM – 3 PM</p>
-              <p>Dinner: 3 PM – 9 PM</p>
-              <p>Open 7 days a week</p>
+              <p id="hours-breakfast">Breakfast: 5 AM - 10 AM</p>
+              <p id="hours-lunch">Lunch: 10 AM - 3 PM</p>
+              <p id="hours-dinner">Dinner: 3 PM - 9 PM</p>
+              <p id="hours-open-days">Open 7 days a week</p>
             </div>
             <div>
               <h3>LOCATION</h3>
-              <p><a href="https://www.google.com/maps/place/120+Santa+Monica+Blvd,+Santa+Monica,+CA+90401" target="_blank" class="contact-link">120 Santa Monica Blvd<br>Santa Monica, CA 90401</a></p>
-              <p><a href="tel:+14248675309" class="contact-link">Tel: (424) 867-5309</a></p>
+              <p><a id="location-link" href="https://www.google.com/maps/place/120+Santa+Monica+Blvd,+Santa+Monica,+CA+90401" target="_blank" class="contact-link">120 Santa Monica Blvd<br>Santa Monica, CA 90401</a></p>
+              <p><a id="phone-link" href="tel:+14248675309" class="contact-link">Tel: (424) 867-5309</a></p>
             </div>
           </div>
         </div>
@@ -119,86 +96,56 @@
     </div>
   </div>
 
-  <!-- Contact Drawer -->
   <div class="drawer" id="contact-drawer">
     <span class="close-btn">×</span>
     <div class="drawer-content">
       <h2>Contact Us</h2>
       <div class="divider"></div>
 
-      <!-- Contact Sections -->
       <div class="contact-sections">
-        <!-- Left Column: Visit Us and Share Your Experience -->
         <div class="contact-column">
-          <!-- Visit Us Section -->
           <div class="contact-box">
             <h3>Visit Us</h3>
             <p><strong>Address:</strong><br>
-              <a href="https://www.google.com/maps/place/120+Santa+Monica+Blvd,+Santa+Monica,+CA+90401" target="_blank" class="contact-link">120 Santa Monica Blvd<br>Santa Monica, CA 90401</a>
+              <a id="contact-address-link" href="https://www.google.com/maps/place/120+Santa+Monica+Blvd,+Santa+Monica,+CA+90401" target="_blank" class="contact-link">120 Santa Monica Blvd<br>Santa Monica, CA 90401</a>
             </p>
             <p><strong>Phone:</strong><br>
-              <a href="tel:+14248675309" class="contact-link">(424) 867-5309</a>
+              <a id="contact-phone-link" href="tel:+14248675309" class="contact-link">(424) 867-5309</a>
             </p>
             <p><strong>Email:</strong><br>
-              <a href="mailto:info@bldsantamonica.com" class="contact-link">info@bldsantamonica.com</a>
+              <a id="contact-email-link" href="mailto:info@bldsantamonica.com" class="contact-link">info@bldsantamonica.com</a>
             </p>
           </div>
 
-          <!-- Share Your Experience Section -->
           <div class="contact-box">
-            <h3>Share Your Experience</h3>
-            <p>Follow us on social media and tag your posts with <strong>#BLDSantaMonica</strong>!</p>
-            <p>
-              <a href="https://instagram.com" target="_blank" class="social-icon">
-                <img src="images/igicon.png" alt="Instagram">
-              </a>
-            </p>
+            <h3>Follow Us</h3>
+            <p>Stay connected and tag your posts with <strong>#BLDSantaMonica</strong>!</p>
+            <div id="contact-social-links" class="social-links-grid"></div>
           </div>
         </div>
 
-        <!-- Right Column: Give Us Feedback -->
         <div class="contact-column">
           <div class="contact-box feedback-box">
             <h3>Give Us Feedback</h3>
             <form id="feedback-form">
               <label for="name">Name</label>
-              <input type="text" id="name" name="name" placeholder="Your Name" aria-label="Your Name" required>
-              
+              <input type="text" id="name" name="name" placeholder="Your Name" required>
+
               <label for="email">Email</label>
-              <input type="email" id="email" name="email" placeholder="Your Email" aria-label="Your Email" required>
-              
+              <input type="email" id="email" name="email" placeholder="Your Email" required>
+
               <label for="feedback">Your Feedback</label>
-              <textarea id="feedback" name="feedback" placeholder="Your Feedback" aria-label="Your Feedback" required></textarea>
-              
+              <textarea id="feedback" name="feedback" placeholder="Your Feedback" required></textarea>
+
               <button type="submit">Submit Feedback</button>
             </form>
             <p id="form-message" class="form-message" style="display: none; color: green; margin-top: 1em;">Thank you for your feedback!</p>
           </div>
         </div>
       </div>
-
-      <!-- Footer Section -->
-      <div class="menu-footer">
-        <img src="images/bldlogo.png" alt="BLD Santa Monica Logo" class="menu-logo">
-        <div class="menu-info">
-          <div>
-            <h3>HOURS</h3>
-            <p>Breakfast: 5 AM – 10 AM</p>
-            <p>Lunch: 10 AM – 3 PM</p>
-            <p>Dinner: 3 PM – 9 PM</p>
-            <p>Open 7 days a week</p>
-          </div>
-          <div>
-            <h3>LOCATION</h3>
-            <p><a href="https://www.google.com/maps/place/120+Santa+Monica+Blvd,+Santa+Monica,+CA+90401" target="_blank" class="contact-link">120 Santa Monica Blvd<br>Santa Monica, CA 90401</a></p>
-            <p><a href="tel:+14248675309" class="contact-link">Tel: (424) 867-5309</a></p>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 
-  <!-- Investors Drawer -->
   <div class="drawer" id="investors-drawer">
     <span class="close-btn">×</span>
     <div class="drawer-content">
@@ -209,7 +156,7 @@
       <div class="investor-grid">
         <div class="investor-card">
           <h3>Concept Model</h3>
-          <p>Three meals. Three clear price points. High-quality ingredients with operational simplicity.</p>
+          <p>Three meals. Three clear price points. High quality ingredients with operational simplicity.</p>
         </div>
         <div class="investor-card">
           <h3>Target Unit Profile</h3>
@@ -229,97 +176,144 @@
     </div>
   </div>
 
-  <!-- Share Drawer -->
   <div class="drawer" id="share-drawer">
     <span class="close-btn">×</span>
     <div class="drawer-content">
       <h2>Share Your Experience</h2>
       <div class="divider"></div>
       <p>Follow us on social media and tag your posts with <strong>#BLDSantaMonica</strong>!</p>
+      <div id="share-social-links" class="social-links-grid"></div>
 
-      <!-- Instagram Posts -->
       <div class="insta-posts">
         <div class="insta-post">
-          <img src="images/eggsbenedict.jpg" alt="eggsbenedict">
+          <img src="images/eggsbenedict.jpg" alt="eggs benedict">
           <div class="insta-caption">
-            <p><strong>@Hal</strong> Best eggs benedict in Santa Monica! 🥚</p>
+            <p><strong>@Hal</strong> Best eggs benedict in Santa Monica!</p>
           </div>
         </div>
         <div class="insta-post">
           <img src="images/chili.jpg" alt="chili">
           <div class="insta-caption">
-            <p><strong>@Megan</strong> This chili bowl hits different! 🌶️</p>
+            <p><strong>@Megan</strong> This chili bowl hits different!</p>
           </div>
         </div>
         <div class="insta-post">
           <img src="images/porkchops.jpg" alt="porkchops">
           <div class="insta-caption">
-            <p><strong>@SantaMonicaFoodie</strong> The pork chop is always perfect! 😋</p>
+            <p><strong>@SantaMonicaFoodie</strong> The pork chop is always perfect!</p>
           </div>
         </div>
         <div class="insta-post">
-          <img src="images/potatopancakes.jpg" alt="potatopancakes">
+          <img src="images/potatopancakes.jpg" alt="potato pancakes">
           <div class="insta-caption">
-            <p><strong>@LAFoodLover</strong> When the potato pancakes are THIS good! 🤤</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Footer Section -->
-      <div class="menu-footer">
-        <img src="images/bldlogo.png" alt="BLD Santa Monica Logo" class="menu-logo">
-        <div class="menu-info">
-          <div>
-            <h3>HOURS</h3>
-            <p>Breakfast: 5 AM – 10 AM</p>
-            <p>Lunch: 10 AM – 3 PM</p>
-            <p>Dinner: 3 PM – 9 PM</p>
-            <p>Open 7 days a week</p>
-          </div>
-          <div>
-            <h3>LOCATION</h3>
-            <p><a href="https://www.google.com/maps/place/120+Santa+Monica+Blvd,+Santa+Monica,+CA+90401" target="_blank" class="contact-link">120 Santa Monica Blvd<br>Santa Monica, CA 90401</a></p>
-            <p><a href="tel:+14248675309" class="contact-link">Tel: (424) 867-5309</a></p>
+            <p><strong>@LAFoodLover</strong> When the potato pancakes are this good!</p>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- BOH Drawer -->
   <div class="drawer" id="boh-drawer">
     <span class="close-btn">×</span>
     <div class="drawer-content">
-      <h2>BOH Access</h2>
+      <h2>BOH Control Panel</h2>
       <div class="divider"></div>
-      <p>Authorized team members can use this panel to access internal operations links.</p>
+      <p>Manage promotions, menu items, merch, location details, and social links here.</p>
 
-      <div class="contact-box boh-login-box">
-        <h3>Back Of House Login</h3>
-        <form id="boh-login-form">
-          <label for="boh-password">Password</label>
-          <input type="password" id="boh-password" name="boh-password" placeholder="Enter BOH password" required>
-          <button type="submit">Unlock BOH</button>
-        </form>
-        <p id="boh-login-message" class="form-message boh-message" style="display: none;"></p>
-      </div>
+      <div class="boh-grid">
+        <section class="boh-card">
+          <h3>Promo Banner</h3>
+          <form id="promo-form" class="boh-form">
+            <label><input type="checkbox" id="promo-active"> Active promo</label>
+            <label for="promo-text">Promo text</label>
+            <input id="promo-text" type="text" placeholder="Happy Hour 3-5 PM Daily">
+            <label for="promo-cta-label">CTA label</label>
+            <input id="promo-cta-label" type="text" placeholder="Learn More">
+            <label for="promo-cta-url">CTA URL</label>
+            <input id="promo-cta-url" type="url" placeholder="https://...">
+            <button type="submit">Save Promo</button>
+          </form>
+        </section>
 
-      <div class="contact-box boh-panel" id="boh-panel" style="display: none;">
-        <h3>Operations Links</h3>
-        <p><a href="mailto:ops@bldsantamonica.com" class="contact-link">ops@bldsantamonica.com</a></p>
-        <p><a href="mailto:vendors@bldsantamonica.com" class="contact-link">vendors@bldsantamonica.com</a></p>
-        <p><a href="mailto:leadership@bldsantamonica.com" class="contact-link">leadership@bldsantamonica.com</a></p>
+        <section class="boh-card">
+          <h3>Add Menu Item</h3>
+          <form id="menu-form" class="boh-form">
+            <label for="menu-name">Name</label>
+            <input id="menu-name" type="text" required>
+            <label for="menu-price">Price (number)</label>
+            <input id="menu-price" type="number" min="0" step="0.01" required>
+            <label for="menu-image">Image URL/path</label>
+            <input id="menu-image" type="text" placeholder="images/breakfast.jpg">
+            <button type="submit">Add Menu Item</button>
+          </form>
+          <div id="menu-admin-list" class="boh-list"></div>
+        </section>
+
+        <section class="boh-card">
+          <h3>Add Merch Item</h3>
+          <form id="merch-form" class="boh-form">
+            <label for="merch-name">Name</label>
+            <input id="merch-name" type="text" required>
+            <label for="merch-price">Price (number)</label>
+            <input id="merch-price" type="number" min="0" step="0.01" required>
+            <label for="merch-image">Image URL/path</label>
+            <input id="merch-image" type="text" placeholder="images/bldlogo.png">
+            <button type="submit">Add Merch Item</button>
+          </form>
+          <div id="merch-admin-list" class="boh-list"></div>
+        </section>
+
+        <section class="boh-card">
+          <h3>Location Details</h3>
+          <form id="location-form" class="boh-form">
+            <label for="location-address">Address</label>
+            <input id="location-address" type="text" required>
+            <label for="location-map-url">Google Maps URL</label>
+            <input id="location-map-url" type="url" required>
+            <label for="location-phone">Phone</label>
+            <input id="location-phone" type="text" required>
+            <label for="location-email">Email</label>
+            <input id="location-email" type="email" required>
+            <label for="hours-breakfast-input">Breakfast hours</label>
+            <input id="hours-breakfast-input" type="text" required>
+            <label for="hours-lunch-input">Lunch hours</label>
+            <input id="hours-lunch-input" type="text" required>
+            <label for="hours-dinner-input">Dinner hours</label>
+            <input id="hours-dinner-input" type="text" required>
+            <label for="hours-open-days-input">Open days</label>
+            <input id="hours-open-days-input" type="text" required>
+            <button type="submit">Save Location</button>
+          </form>
+        </section>
+
+        <section class="boh-card boh-card-wide">
+          <h3>Social Links</h3>
+          <form id="social-form" class="boh-form boh-inline-form">
+            <input id="social-label" type="text" placeholder="Instagram" required>
+            <select id="social-icon" required>
+              <option value="instagram">Instagram</option>
+              <option value="facebook">Facebook</option>
+              <option value="tiktok">TikTok</option>
+              <option value="x">X</option>
+              <option value="youtube">YouTube</option>
+              <option value="linkedin">LinkedIn</option>
+              <option value="link">Link</option>
+            </select>
+            <input id="social-url" type="url" placeholder="https://..." required>
+            <button type="submit">Add Social Link</button>
+          </form>
+          <div id="social-admin-list" class="boh-list"></div>
+        </section>
       </div>
+      <p id="boh-status" class="boh-status" aria-live="polite"></p>
     </div>
   </div>
 
-  <!-- Footer -->
   <footer class="footer">
     <button type="button" id="boh-trigger" class="footer-left footer-admin-trigger" data-drawer="boh-drawer">© 2026 BLD Santa Monica</button>
     <p class="footer-right">Designed by Justise Web Design</p>
   </footer>
 
-  <!-- Link to the external script.js file -->
   <script src="script.js"></script>
 </body>
 </html>
