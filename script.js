@@ -376,6 +376,12 @@ function bindSyncForm() {
   const clearTokenBtn = document.getElementById('sync-clear-token-btn');
   if (!form || !pullBtn || !pushBtn) return;
 
+  const setSyncBusy = (busy) => {
+    [pullBtn, pushBtn, clearTokenBtn].forEach((btn) => {
+      if (btn) btn.disabled = busy;
+    });
+  };
+
   // Keep settings persisted automatically so users don't need to keep re-entering token/config.
   form.querySelectorAll('input').forEach((input) => {
     input.addEventListener('input', () => {
@@ -398,6 +404,7 @@ function bindSyncForm() {
   });
 
   pullBtn.addEventListener('click', async () => {
+    setSyncBusy(true);
     try {
       readSyncSettingsFromForm();
       saveSyncSettings();
@@ -411,10 +418,13 @@ function bindSyncForm() {
       setStatus('Loaded latest config from GitHub.');
     } catch (err) {
       setStatus(`GitHub load failed: ${err.message}`);
+    } finally {
+      setSyncBusy(false);
     }
   });
 
   pushBtn.addEventListener('click', async () => {
+    setSyncBusy(true);
     try {
       readSyncSettingsFromForm();
       saveSyncSettings();
@@ -424,6 +434,8 @@ function bindSyncForm() {
       setStatus('Saved to GitHub. All devices can now load shared data.');
     } catch (err) {
       setStatus(`GitHub save failed: ${err.message}`);
+    } finally {
+      setSyncBusy(false);
     }
   });
 
@@ -897,36 +909,52 @@ function sanitizeFileName(name) {
 
 async function putRepoFile({ path, message, contentBase64 }) {
   const endpoint = `https://api.github.com/repos/${encodeURIComponent(syncSettings.owner)}/${encodeURIComponent(syncSettings.repo)}/contents/${encodeGitHubPath(path)}`;
-  let existingSha = null;
+  const maxAttempts = 3;
 
-  const getResponse = await fetch(`${endpoint}?ref=${encodeURIComponent(syncSettings.branch)}`, {
-    headers: githubHeaders(syncSettings.token),
-  });
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    let existingSha = null;
 
-  if (getResponse.ok) {
-    const existing = await getResponse.json();
-    existingSha = existing.sha || null;
-  } else if (getResponse.status !== 404) {
-    throw new Error(`Unable to check file: HTTP ${getResponse.status}`);
-  }
+    const getResponse = await fetch(`${endpoint}?ref=${encodeURIComponent(syncSettings.branch)}`, {
+      headers: githubHeaders(syncSettings.token),
+    });
 
-  const body = {
-    message,
-    content: contentBase64,
-    branch: syncSettings.branch,
-  };
-  if (existingSha) body.sha = existingSha;
+    if (getResponse.ok) {
+      const existing = await getResponse.json();
+      existingSha = existing.sha || null;
+    } else if (getResponse.status !== 404) {
+      throw new Error(`Unable to check file: HTTP ${getResponse.status}`);
+    }
 
-  const putResponse = await fetch(endpoint, {
-    method: 'PUT',
-    headers: githubHeaders(syncSettings.token),
-    body: JSON.stringify(body),
-  });
+    const body = {
+      message,
+      content: contentBase64,
+      branch: syncSettings.branch,
+    };
+    if (existingSha) body.sha = existingSha;
 
-  if (!putResponse.ok) {
+    const putResponse = await fetch(endpoint, {
+      method: 'PUT',
+      headers: githubHeaders(syncSettings.token),
+      body: JSON.stringify(body),
+    });
+
+    if (putResponse.ok) return;
+
     const details = await safeJson(putResponse);
-    throw new Error(details?.message || `HTTP ${putResponse.status}`);
+    const apiMessage = details?.message || '';
+    const isShaConflict =
+      (putResponse.status === 409 || putResponse.status === 422) &&
+      /does not match|sha/i.test(apiMessage);
+
+    if (isShaConflict && attempt < maxAttempts) {
+      await sleep(250 * attempt);
+      continue;
+    }
+
+    throw new Error(apiMessage || `HTTP ${putResponse.status}`);
   }
+
+  throw new Error('Could not save to GitHub right now. Please try again.');
 }
 
 function encodeGitHubPath(path) {
@@ -939,6 +967,12 @@ function encodeGitHubPath(path) {
 
 function encodeBase64(str) {
   return btoa(unescape(encodeURIComponent(str)));
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 }
 
 function decodeBase64(str) {
