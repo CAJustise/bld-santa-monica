@@ -9,6 +9,10 @@ body {
   background: linear-gradient(180deg, #f3f7fb 0%, #dbe5f1 100%);
 }
 
+body.lightbox-open {
+  overflow: hidden;
+}
+
 .topbar {
   position: sticky;
   top: 0;
@@ -154,6 +158,32 @@ li {
   font-size: 0.9rem;
   color: #0b2d4f;
   min-height: 1.2em;
+}
+
+.site-image-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.82);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem;
+  cursor: zoom-out;
+}
+
+.site-image-lightbox.active {
+  display: flex;
+}
+
+.site-image-lightbox-content {
+  max-width: min(1200px, 96vw);
+  max-height: 92vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
 }
 
 @media (max-width: 960px) {

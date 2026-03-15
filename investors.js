@@ -1,3 +1,5 @@
+initImageLightbox();
+
 const requestForm = document.getElementById('investor-request-form');
 const requestStatus = document.getElementById('request-status');
 
@@ -16,5 +18,50 @@ if (requestForm && requestStatus) {
 
     requestStatus.textContent = 'Request prepared. Opening your email app now.';
     window.location.href = `mailto:investors@bldsantamonica.com?subject=${subject}&body=${body}`;
+  });
+}
+
+function initImageLightbox() {
+  if (document.getElementById('site-image-lightbox')) return;
+
+  const overlay = document.createElement('div');
+  overlay.id = 'site-image-lightbox';
+  overlay.className = 'site-image-lightbox';
+  overlay.innerHTML = '<img class="site-image-lightbox-content" alt="">';
+  document.body.appendChild(overlay);
+
+  const lightboxImg = overlay.querySelector('.site-image-lightbox-content');
+  if (!lightboxImg) return;
+
+  const closeLightbox = () => {
+    overlay.classList.remove('active');
+    lightboxImg.removeAttribute('src');
+    document.body.classList.remove('lightbox-open');
+  };
+
+  document.addEventListener('click', (event) => {
+    if (event.target.closest('#site-image-lightbox')) {
+      closeLightbox();
+      return;
+    }
+
+    const image = event.target.closest('img');
+    if (!image) return;
+    if (image.classList.contains('site-image-lightbox-content')) return;
+    if (image.dataset.noLightbox === 'true') return;
+
+    const src = image.currentSrc || image.getAttribute('src');
+    if (!src) return;
+
+    if (image.closest('a')) event.preventDefault();
+
+    lightboxImg.src = src;
+    lightboxImg.alt = image.alt || 'Expanded image';
+    overlay.classList.add('active');
+    document.body.classList.add('lightbox-open');
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeLightbox();
   });
 }
