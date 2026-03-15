@@ -31,6 +31,12 @@
       "name": "BLD - Polo",
       "price": 45,
       "image": "images/polo.png"
+    },
+    {
+      "id": "a3400cff-507a-4423-b6ad-42365ec691af",
+      "name": "BLD - Hat",
+      "price": 30,
+      "image": "images/hat.png"
     }
   ],
   "location": {
