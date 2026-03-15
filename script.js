@@ -440,15 +440,57 @@ function removeMenuItem(id) {
   renderMenus();
 }
 
+function updateMenuItem(id, nextValues) {
+  state.menuItems = state.menuItems.map((item) => {
+    if (item.id !== id) return item;
+    return {
+      ...item,
+      name: nextValues.name,
+      price: nextValues.price,
+      image: nextValues.image,
+    };
+  });
+  saveConfigLocal('Menu item updated locally.');
+  renderMenus();
+}
+
 function removeMerchItem(id) {
   state.merchItems = state.merchItems.filter((item) => item.id !== id);
   saveConfigLocal('Merch item removed locally.');
   renderMerch();
 }
 
+function updateMerchItem(id, nextValues) {
+  state.merchItems = state.merchItems.map((item) => {
+    if (item.id !== id) return item;
+    return {
+      ...item,
+      name: nextValues.name,
+      price: nextValues.price,
+      image: nextValues.image,
+    };
+  });
+  saveConfigLocal('Merch item updated locally.');
+  renderMerch();
+}
+
 function removeSocialLink(id) {
   state.socialLinks = state.socialLinks.filter((item) => item.id !== id);
   saveConfigLocal('Social link removed locally.');
+  renderSocialLinks();
+}
+
+function updateSocialLink(id, nextValues) {
+  state.socialLinks = state.socialLinks.map((item) => {
+    if (item.id !== id) return item;
+    return {
+      ...item,
+      label: nextValues.label,
+      icon: nextValues.icon,
+      url: nextValues.url,
+    };
+  });
+  saveConfigLocal('Social link updated locally.');
   renderSocialLinks();
 }
 
@@ -498,11 +540,32 @@ function renderMenus() {
   menuAdminList.innerHTML = state.menuItems
     .map((item) => `
       <div class="boh-list-row">
-        <span>${escapeHtml(item.name)} - $${Number(item.price).toFixed(2)}</span>
-        <button type="button" data-remove-menu="${item.id}">Remove</button>
+        <div class="boh-row-fields">
+          <input type="text" value="${escapeHtml(item.name)}" data-menu-name="${item.id}" aria-label="Menu item name">
+          <input type="number" min="0" step="0.01" value="${Number(item.price).toFixed(2)}" data-menu-price="${item.id}" aria-label="Menu item price">
+          <input type="text" value="${escapeHtml(item.image)}" data-menu-image="${item.id}" aria-label="Menu item image">
+        </div>
+        <div class="boh-row-actions">
+          <button type="button" class="boh-action-save" data-update-menu="${item.id}">Save</button>
+          <button type="button" class="boh-action-remove" data-remove-menu="${item.id}">Remove</button>
+        </div>
       </div>
     `)
     .join('');
+
+  menuAdminList.querySelectorAll('[data-update-menu]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-update-menu');
+      const name = menuAdminList.querySelector(`[data-menu-name="${id}"]`)?.value.trim() || '';
+      const price = Number(menuAdminList.querySelector(`[data-menu-price="${id}"]`)?.value);
+      const image = menuAdminList.querySelector(`[data-menu-image="${id}"]`)?.value.trim() || 'images/breakfast.jpg';
+      if (!name || Number.isNaN(price)) {
+        setStatus('Menu update needs a valid name and price.');
+        return;
+      }
+      updateMenuItem(id, { name, price, image });
+    });
+  });
 
   menuAdminList.querySelectorAll('[data-remove-menu]').forEach((btn) => {
     btn.addEventListener('click', () => removeMenuItem(btn.getAttribute('data-remove-menu')));
@@ -531,11 +594,32 @@ function renderMerch() {
   merchAdminList.innerHTML = state.merchItems
     .map((item) => `
       <div class="boh-list-row">
-        <span>${escapeHtml(item.name)} - $${Number(item.price).toFixed(2)}</span>
-        <button type="button" data-remove-merch="${item.id}">Remove</button>
+        <div class="boh-row-fields">
+          <input type="text" value="${escapeHtml(item.name)}" data-merch-name="${item.id}" aria-label="Merch item name">
+          <input type="number" min="0" step="0.01" value="${Number(item.price).toFixed(2)}" data-merch-price="${item.id}" aria-label="Merch item price">
+          <input type="text" value="${escapeHtml(item.image)}" data-merch-image="${item.id}" aria-label="Merch item image">
+        </div>
+        <div class="boh-row-actions">
+          <button type="button" class="boh-action-save" data-update-merch="${item.id}">Save</button>
+          <button type="button" class="boh-action-remove" data-remove-merch="${item.id}">Remove</button>
+        </div>
       </div>
     `)
     .join('');
+
+  merchAdminList.querySelectorAll('[data-update-merch]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-update-merch');
+      const name = merchAdminList.querySelector(`[data-merch-name="${id}"]`)?.value.trim() || '';
+      const price = Number(merchAdminList.querySelector(`[data-merch-price="${id}"]`)?.value);
+      const image = merchAdminList.querySelector(`[data-merch-image="${id}"]`)?.value.trim() || 'images/bldlogo.png';
+      if (!name || Number.isNaN(price)) {
+        setStatus('Merch update needs a valid name and price.');
+        return;
+      }
+      updateMerchItem(id, { name, price, image });
+    });
+  });
 
   merchAdminList.querySelectorAll('[data-remove-merch]').forEach((btn) => {
     btn.addEventListener('click', () => removeMerchItem(btn.getAttribute('data-remove-merch')));
@@ -595,11 +679,40 @@ function renderSocialLinks() {
     adminList.innerHTML = state.socialLinks
       .map((item) => `
         <div class="boh-list-row">
-          <span>${escapeHtml(item.label)} - ${escapeHtml(item.url)}</span>
-          <button type="button" data-remove-social="${item.id}">Remove</button>
+          <div class="boh-row-fields">
+            <input type="text" value="${escapeHtml(item.label)}" data-social-label="${item.id}" aria-label="Social label">
+            <select data-social-icon="${item.id}" aria-label="Social icon">
+              <option value="instagram" ${item.icon === 'instagram' ? 'selected' : ''}>Instagram</option>
+              <option value="facebook" ${item.icon === 'facebook' ? 'selected' : ''}>Facebook</option>
+              <option value="tiktok" ${item.icon === 'tiktok' ? 'selected' : ''}>TikTok</option>
+              <option value="x" ${item.icon === 'x' ? 'selected' : ''}>X</option>
+              <option value="youtube" ${item.icon === 'youtube' ? 'selected' : ''}>YouTube</option>
+              <option value="linkedin" ${item.icon === 'linkedin' ? 'selected' : ''}>LinkedIn</option>
+              <option value="link" ${item.icon === 'link' ? 'selected' : ''}>Link</option>
+            </select>
+            <input type="url" value="${escapeHtml(item.url)}" data-social-url="${item.id}" aria-label="Social URL">
+          </div>
+          <div class="boh-row-actions">
+            <button type="button" class="boh-action-save" data-update-social="${item.id}">Save</button>
+            <button type="button" class="boh-action-remove" data-remove-social="${item.id}">Remove</button>
+          </div>
         </div>
       `)
       .join('');
+
+    adminList.querySelectorAll('[data-update-social]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-update-social');
+        const label = adminList.querySelector(`[data-social-label="${id}"]`)?.value.trim() || '';
+        const icon = adminList.querySelector(`[data-social-icon="${id}"]`)?.value || 'link';
+        const url = adminList.querySelector(`[data-social-url="${id}"]`)?.value.trim() || '';
+        if (!label || !url) {
+          setStatus('Social update needs a valid label and URL.');
+          return;
+        }
+        updateSocialLink(id, { label, icon, url });
+      });
+    });
 
     adminList.querySelectorAll('[data-remove-social]').forEach((btn) => {
       btn.addEventListener('click', () => removeSocialLink(btn.getAttribute('data-remove-social')));
