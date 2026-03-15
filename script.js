@@ -367,11 +367,13 @@ function bindSyncForm() {
   setFormValue('sync-repo', syncSettings.repo);
   setFormValue('sync-branch', syncSettings.branch);
   setFormValue('sync-path', syncSettings.path);
-  setFormValue('sync-token', syncSettings.token);
+  setFormValue('sync-token', '');
+  updateSyncTokenHint();
 
   const form = document.getElementById('sync-form');
   const pullBtn = document.getElementById('sync-pull-btn');
   const pushBtn = document.getElementById('sync-push-btn');
+  const clearTokenBtn = document.getElementById('sync-clear-token-btn');
   if (!form || !pullBtn || !pushBtn) return;
 
   // Keep settings persisted automatically so users don't need to keep re-entering token/config.
@@ -379,10 +381,12 @@ function bindSyncForm() {
     input.addEventListener('input', () => {
       readSyncSettingsFromForm();
       saveSyncSettings();
+      updateSyncTokenHint();
     });
     input.addEventListener('change', () => {
       readSyncSettingsFromForm();
       saveSyncSettings();
+      updateSyncTokenHint();
     });
   });
 
@@ -390,12 +394,14 @@ function bindSyncForm() {
     e.preventDefault();
     readSyncSettingsFromForm();
     saveSyncSettings('Sync settings saved on this device.');
+    updateSyncTokenHint();
   });
 
   pullBtn.addEventListener('click', async () => {
     try {
       readSyncSettingsFromForm();
       saveSyncSettings();
+      updateSyncTokenHint();
       setStatus('Loading config from GitHub...');
       const data = await pullConfigFromGitHub();
       state = mergeConfig(data);
@@ -412,6 +418,7 @@ function bindSyncForm() {
     try {
       readSyncSettingsFromForm();
       saveSyncSettings();
+      updateSyncTokenHint();
       setStatus('Saving config to GitHub...');
       await pushConfigToGitHub();
       setStatus('Saved to GitHub. All devices can now load shared data.');
@@ -419,6 +426,15 @@ function bindSyncForm() {
       setStatus(`GitHub save failed: ${err.message}`);
     }
   });
+
+  if (clearTokenBtn) {
+    clearTokenBtn.addEventListener('click', () => {
+      syncSettings.token = '';
+      setFormValue('sync-token', '');
+      saveSyncSettings('Saved token cleared on this device.');
+      updateSyncTokenHint();
+    });
+  }
 }
 
 function readSyncSettingsFromForm() {
@@ -433,7 +449,24 @@ function readSyncSettingsFromForm() {
   syncSettings.repo = repo.value.trim();
   syncSettings.branch = branch.value.trim();
   syncSettings.path = path.value.trim();
-  syncSettings.token = token.value.trim();
+  const typedToken = token.value.trim();
+  if (typedToken) {
+    syncSettings.token = typedToken;
+  }
+}
+
+function updateSyncTokenHint() {
+  const hint = document.getElementById('sync-token-hint');
+  const tokenInput = document.getElementById('sync-token');
+  if (!hint || !tokenInput) return;
+
+  if (syncSettings.token) {
+    hint.textContent = 'Saved token found on this device. Leave token box blank unless replacing it.';
+    tokenInput.placeholder = 'Saved token on this device';
+  } else {
+    hint.textContent = 'No token saved yet on this device.';
+    tokenInput.placeholder = 'ghp_...';
+  }
 }
 
 async function pullConfigFromGitHub() {
@@ -452,8 +485,9 @@ async function pullConfigFromGitHub() {
 }
 
 async function pushConfigToGitHub() {
+  readSyncSettingsFromForm();
   if (!syncSettings.token) {
-    throw new Error('Enter a GitHub token first.');
+    throw new Error('Enter a GitHub token once in Sync settings first.');
   }
 
   await putRepoFile({
@@ -808,8 +842,9 @@ function sanitizePhone(phone) {
 async function uploadImageFromInput(fileInput, scope) {
   readSyncSettingsFromForm();
   saveSyncSettings();
+  updateSyncTokenHint();
   if (!syncSettings.token) {
-    throw new Error('Enter a GitHub token in Sync settings first.');
+    throw new Error('Enter a GitHub token once in Sync settings first.');
   }
   const file = fileInput.files?.[0];
   if (!file) {

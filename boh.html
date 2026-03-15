@@ -119,11 +119,13 @@
           <input id="sync-path" type="text" value="site-data.json" required>
           <label for="sync-token">GitHub token (repo scope, saved on this device once)</label>
           <input id="sync-token" type="password" placeholder="ghp_...">
+          <p id="sync-token-hint" class="sync-help"></p>
           <button type="submit">Save Sync Settings (Optional)</button>
         </form>
         <div class="sync-actions">
           <button type="button" id="sync-pull-btn">Load From GitHub</button>
           <button type="button" id="sync-push-btn">Save To GitHub (All Devices)</button>
+          <button type="button" id="sync-clear-token-btn">Clear Saved Token</button>
         </div>
       </section>
     </div>
