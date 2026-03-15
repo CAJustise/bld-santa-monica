@@ -23,6 +23,7 @@
       <nav class="nav-links">
         <a href="#menus" class="nav-link" data-drawer="menus-drawer">Menus</a>
         <a href="#contact" class="nav-link" data-drawer="contact-drawer">Contact</a>
+        <a href="#investors" class="nav-link" data-drawer="investors-drawer">Investors</a>
         <a href="#share" class="nav-link" data-drawer="share-drawer">Share</a>
         <span class="gold-line"></span>
         <a href="https://instagram.com" class="social-icon"><img src="images/igicon.png" alt="Instagram"></a>
@@ -197,6 +198,37 @@
     </div>
   </div>
 
+  <!-- Investors Drawer -->
+  <div class="drawer" id="investors-drawer">
+    <span class="close-btn">×</span>
+    <div class="drawer-content">
+      <h2>Investors</h2>
+      <div class="divider"></div>
+      <p>BLD Santa Monica is positioned as a premium all-day concept designed for consistency, simplicity, and scalable unit economics.</p>
+
+      <div class="investor-grid">
+        <div class="investor-card">
+          <h3>Concept Model</h3>
+          <p>Three meals. Three clear price points. High-quality ingredients with operational simplicity.</p>
+        </div>
+        <div class="investor-card">
+          <h3>Target Unit Profile</h3>
+          <p>Dense coastal trade area, strong daytime traffic, and repeat local demand.</p>
+        </div>
+        <div class="investor-card">
+          <h3>Scale Path</h3>
+          <p>Santa Monica flagship first, then selective expansion into similar high-traffic submarkets.</p>
+        </div>
+      </div>
+
+      <div class="contact-box investor-cta">
+        <h3>Request Investor Deck</h3>
+        <p>Email us for detailed projections, rollout assumptions, and capital structure.</p>
+        <p><a href="mailto:investors@bldsantamonica.com" class="contact-link">investors@bldsantamonica.com</a></p>
+      </div>
+    </div>
+  </div>
+
   <!-- Share Drawer -->
   <div class="drawer" id="share-drawer">
     <span class="close-btn">×</span>
@@ -254,9 +286,36 @@
     </div>
   </div>
 
+  <!-- BOH Drawer -->
+  <div class="drawer" id="boh-drawer">
+    <span class="close-btn">×</span>
+    <div class="drawer-content">
+      <h2>BOH Access</h2>
+      <div class="divider"></div>
+      <p>Authorized team members can use this panel to access internal operations links.</p>
+
+      <div class="contact-box boh-login-box">
+        <h3>Back Of House Login</h3>
+        <form id="boh-login-form">
+          <label for="boh-password">Password</label>
+          <input type="password" id="boh-password" name="boh-password" placeholder="Enter BOH password" required>
+          <button type="submit">Unlock BOH</button>
+        </form>
+        <p id="boh-login-message" class="form-message boh-message" style="display: none;"></p>
+      </div>
+
+      <div class="contact-box boh-panel" id="boh-panel" style="display: none;">
+        <h3>Operations Links</h3>
+        <p><a href="mailto:ops@bldsantamonica.com" class="contact-link">ops@bldsantamonica.com</a></p>
+        <p><a href="mailto:vendors@bldsantamonica.com" class="contact-link">vendors@bldsantamonica.com</a></p>
+        <p><a href="mailto:leadership@bldsantamonica.com" class="contact-link">leadership@bldsantamonica.com</a></p>
+      </div>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="footer">
-    <p class="footer-left">© 2025 BLD Santa Monica</p>
+    <button type="button" id="boh-trigger" class="footer-left footer-admin-trigger" data-drawer="boh-drawer">© 2026 BLD Santa Monica</button>
     <p class="footer-right">Designed by Justise Web Design</p>
   </footer>
 
