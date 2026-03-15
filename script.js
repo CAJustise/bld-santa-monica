@@ -125,6 +125,12 @@ async function fetchPublishedConfig() {
 }
 
 function initDrawers() {
+  const setHeroSlide = (isOpen) => {
+    if (!heroOverlay) return;
+    if (isOpen) heroOverlay.classList.add('slide-up');
+    else heroOverlay.classList.remove('slide-up');
+  };
+
   const openDrawer = (drawerId) => {
     const drawer = document.getElementById(drawerId);
     if (!drawer) return;
@@ -134,8 +140,7 @@ function initDrawers() {
     });
 
     drawer.classList.toggle('active');
-    if (drawer.classList.contains('active')) heroOverlay.classList.add('slide-up');
-    else heroOverlay.classList.remove('slide-up');
+    setHeroSlide(drawer.classList.contains('active'));
   };
 
   navLinks.forEach((link) => {
@@ -156,7 +161,7 @@ function initDrawers() {
     btn.addEventListener('click', () => {
       const drawer = btn.closest('.drawer');
       if (drawer) drawer.classList.remove('active');
-      heroOverlay.classList.remove('slide-up');
+      setHeroSlide(false);
     });
   });
 
@@ -164,7 +169,7 @@ function initDrawers() {
     drawer.addEventListener('click', (e) => {
       if (e.target === drawer) {
         drawer.classList.remove('active');
-        heroOverlay.classList.remove('slide-up');
+        setHeroSlide(false);
       }
     });
   });
@@ -177,7 +182,7 @@ function initDrawers() {
       !e.target.closest('.footer-admin-trigger')
     ) {
       drawers.forEach((drawer) => drawer.classList.remove('active'));
-      heroOverlay.classList.remove('slide-up');
+      setHeroSlide(false);
     }
   });
 }
@@ -533,19 +538,21 @@ function renderPromo() {
 function renderMenus() {
   const menuContainer = document.getElementById('menu-meals');
   const menuAdminList = document.getElementById('menu-admin-list');
-  if (!menuContainer || !menuAdminList) return;
-
-  menuContainer.innerHTML = state.menuItems
-    .map((item) => `
-      <div class="meal-item">
-        <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">
-        <div class="meal-text">
-          <h3>${escapeHtml(item.name)}</h3>
-          <p>$${Number(item.price).toFixed(2)} per person</p>
+  if (menuContainer) {
+    menuContainer.innerHTML = state.menuItems
+      .map((item) => `
+        <div class="meal-item">
+          <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">
+          <div class="meal-text">
+            <h3>${escapeHtml(item.name)}</h3>
+            <p>$${Number(item.price).toFixed(2)} per person</p>
+          </div>
         </div>
-      </div>
-    `)
-    .join('');
+      `)
+      .join('');
+  }
+
+  if (!menuAdminList) return;
 
   menuAdminList.innerHTML = state.menuItems
     .map((item) => `
@@ -589,21 +596,23 @@ function renderMenus() {
 function renderMerch() {
   const merchContainer = document.getElementById('merch-grid');
   const merchAdminList = document.getElementById('merch-admin-list');
-  if (!merchContainer || !merchAdminList) return;
-
-  if (!state.merchItems.length) {
-    merchContainer.innerHTML = '<p>No merch listed yet.</p>';
-  } else {
-    merchContainer.innerHTML = state.merchItems
-      .map((item) => `
-        <article class="merch-item">
-          <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">
-          <h4>${escapeHtml(item.name)}</h4>
-          <p>$${Number(item.price).toFixed(2)}</p>
-        </article>
-      `)
-      .join('');
+  if (merchContainer) {
+    if (!state.merchItems.length) {
+      merchContainer.innerHTML = '<p>No merch listed yet.</p>';
+    } else {
+      merchContainer.innerHTML = state.merchItems
+        .map((item) => `
+          <article class="merch-item">
+            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">
+            <h4>${escapeHtml(item.name)}</h4>
+            <p>$${Number(item.price).toFixed(2)}</p>
+          </article>
+        `)
+        .join('');
+    }
   }
+
+  if (!merchAdminList) return;
 
   merchAdminList.innerHTML = state.merchItems
     .map((item) => `
@@ -693,8 +702,9 @@ function renderSocialLinks() {
   if (contactTarget) contactTarget.innerHTML = linksHtml || '<p>No social links yet.</p>';
   if (shareTarget) shareTarget.innerHTML = linksHtml || '<p>No social links yet.</p>';
 
-  if (adminList) {
-    adminList.innerHTML = state.socialLinks
+  if (!adminList) return;
+
+  adminList.innerHTML = state.socialLinks
       .map((item) => `
         <div class="boh-list-row">
           <div class="boh-row-fields">
@@ -718,24 +728,23 @@ function renderSocialLinks() {
       `)
       .join('');
 
-    adminList.querySelectorAll('[data-update-social]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-update-social');
-        const label = adminList.querySelector(`[data-social-label="${id}"]`)?.value.trim() || '';
-        const icon = adminList.querySelector(`[data-social-icon="${id}"]`)?.value || 'link';
-        const url = adminList.querySelector(`[data-social-url="${id}"]`)?.value.trim() || '';
-        if (!label || !url) {
-          setStatus('Social update needs a valid label and URL.');
-          return;
-        }
-        updateSocialLink(id, { label, icon, url });
-      });
+  adminList.querySelectorAll('[data-update-social]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-update-social');
+      const label = adminList.querySelector(`[data-social-label="${id}"]`)?.value.trim() || '';
+      const icon = adminList.querySelector(`[data-social-icon="${id}"]`)?.value || 'link';
+      const url = adminList.querySelector(`[data-social-url="${id}"]`)?.value.trim() || '';
+      if (!label || !url) {
+        setStatus('Social update needs a valid label and URL.');
+        return;
+      }
+      updateSocialLink(id, { label, icon, url });
     });
+  });
 
-    adminList.querySelectorAll('[data-remove-social]').forEach((btn) => {
-      btn.addEventListener('click', () => removeSocialLink(btn.getAttribute('data-remove-social')));
-    });
-  }
+  adminList.querySelectorAll('[data-remove-social]').forEach((btn) => {
+    btn.addEventListener('click', () => removeSocialLink(btn.getAttribute('data-remove-social')));
+  });
 }
 
 function socialIconSvg(icon) {
