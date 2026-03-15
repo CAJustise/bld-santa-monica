@@ -727,12 +727,17 @@ body {
   overflow: hidden;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   padding-bottom: 0.6em;
+  display: flex;
+  flex-direction: column;
 }
 
 .merch-item img {
   width: 100%;
-  height: 160px;
-  object-fit: cover;
+  height: 220px;
+  object-fit: contain;
+  object-position: center;
+  background: #f6f7f9;
+  padding: 0.6rem;
   display: block;
 }
 
