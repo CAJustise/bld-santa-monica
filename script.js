@@ -733,7 +733,7 @@ function renderMenus() {
           <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">
           <div class="meal-text">
             <h3>${escapeHtml(item.name)}</h3>
-            <p>$${Number(item.price).toFixed(2)} per person</p>
+            <p>$${formatPrice(item.price)} per person</p>
           </div>
         </div>
       `)
@@ -747,7 +747,7 @@ function renderMenus() {
       <div class="boh-list-row">
         <div class="boh-row-fields">
           <input class="name-field" type="text" value="${escapeHtml(item.name)}" data-menu-name="${item.id}" aria-label="Menu item name">
-          <input class="price-field" type="number" min="0" max="999.99" step="0.01" value="${Number(item.price).toFixed(2)}" data-menu-price="${item.id}" aria-label="Menu item price">
+          <input class="price-field" type="number" min="0" max="999.99" step="0.01" value="${formatPrice(item.price)}" data-menu-price="${item.id}" aria-label="Menu item price">
           <input type="text" value="${escapeHtml(item.image)}" data-menu-image="${item.id}" aria-label="Menu item image">
         </div>
         <div class="boh-row-actions">
@@ -793,7 +793,7 @@ function renderMerch() {
           <article class="merch-item">
             <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">
             <h4>${escapeHtml(item.name)}</h4>
-            <p>$${Number(item.price).toFixed(2)}</p>
+            <p>$${formatPrice(item.price)}</p>
           </article>
         `)
         .join('');
@@ -807,7 +807,7 @@ function renderMerch() {
       <div class="boh-list-row">
         <div class="boh-row-fields">
           <input class="name-field" type="text" value="${escapeHtml(item.name)}" data-merch-name="${item.id}" aria-label="Merch item name">
-          <input class="price-field" type="number" min="0" max="999.99" step="0.01" value="${Number(item.price).toFixed(2)}" data-merch-price="${item.id}" aria-label="Merch item price">
+          <input class="price-field" type="number" min="0" max="999.99" step="0.01" value="${formatPrice(item.price)}" data-merch-price="${item.id}" aria-label="Merch item price">
           <input type="text" value="${escapeHtml(item.image)}" data-merch-image="${item.id}" aria-label="Merch item image">
         </div>
         <div class="boh-row-actions">
@@ -964,6 +964,15 @@ function setAttr(id, attr, value) {
 
 function sanitizePhone(phone) {
   return phone.replace(/[^\d+]/g, '');
+}
+
+function formatPrice(value) {
+  const num = Number(value);
+  if (!Number.isFinite(num)) return String(value ?? '');
+  const rounded = Math.round(num * 100) / 100;
+  return String(rounded)
+    .replace(/\.0+$/, '')
+    .replace(/(\.\d*[1-9])0+$/, '$1');
 }
 
 async function uploadImageFromInput(fileInput, scope) {
