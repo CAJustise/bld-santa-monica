@@ -777,6 +777,10 @@ body {
   font-family: inherit;
 }
 
+.boh-form .price-input {
+  width: min(11ch, 100%);
+}
+
 .boh-form button {
   background: #1a3c5e;
   color: #fff;
@@ -809,7 +813,7 @@ body {
 .boh-row-fields {
   flex: 1;
   display: grid;
-  grid-template-columns: 1fr 140px 1.2fr;
+  grid-template-columns: minmax(260px, 1.7fr) minmax(90px, 110px) minmax(220px, 1.3fr);
   gap: 0.45em;
 }
 
@@ -821,6 +825,15 @@ body {
   border: 1px solid #d0d7de;
   border-radius: 6px;
   font-family: inherit;
+}
+
+.boh-row-fields .name-field {
+  min-width: 20ch;
+}
+
+.boh-row-fields .price-field {
+  width: 100%;
+  text-align: right;
 }
 
 .boh-row-actions {

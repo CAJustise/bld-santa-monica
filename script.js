@@ -246,7 +246,22 @@ function bindPromoForm() {
 
 function bindMenuForm() {
   const form = document.getElementById('menu-form');
+  const uploadBtn = document.getElementById('menu-image-upload-btn');
+  const fileInput = document.getElementById('menu-image-file');
+  const imageInput = document.getElementById('menu-image');
   if (!form) return;
+
+  if (uploadBtn && fileInput && imageInput) {
+    uploadBtn.addEventListener('click', async () => {
+      try {
+        const uploadedPath = await uploadImageFromInput(fileInput, 'menu');
+        imageInput.value = uploadedPath;
+        setStatus(`Uploaded image to ${uploadedPath}`);
+      } catch (err) {
+        setStatus(`Menu image upload failed: ${err.message}`);
+      }
+    });
+  }
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -254,6 +269,10 @@ function bindMenuForm() {
     const price = Number(document.getElementById('menu-price').value);
     const image = document.getElementById('menu-image').value.trim() || 'images/breakfast.jpg';
     if (!name || Number.isNaN(price)) return;
+    if (price < 0 || price > 999.99) {
+      setStatus('Menu price must be between 0.00 and 999.99.');
+      return;
+    }
 
     state.menuItems.push({ id: crypto.randomUUID(), name, price, image });
     saveConfigLocal('Menu item saved locally.');
@@ -264,7 +283,22 @@ function bindMenuForm() {
 
 function bindMerchForm() {
   const form = document.getElementById('merch-form');
+  const uploadBtn = document.getElementById('merch-image-upload-btn');
+  const fileInput = document.getElementById('merch-image-file');
+  const imageInput = document.getElementById('merch-image');
   if (!form) return;
+
+  if (uploadBtn && fileInput && imageInput) {
+    uploadBtn.addEventListener('click', async () => {
+      try {
+        const uploadedPath = await uploadImageFromInput(fileInput, 'merch');
+        imageInput.value = uploadedPath;
+        setStatus(`Uploaded image to ${uploadedPath}`);
+      } catch (err) {
+        setStatus(`Merch image upload failed: ${err.message}`);
+      }
+    });
+  }
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -272,6 +306,10 @@ function bindMerchForm() {
     const price = Number(document.getElementById('merch-price').value);
     const image = document.getElementById('merch-image').value.trim() || 'images/bldlogo.png';
     if (!name || Number.isNaN(price)) return;
+    if (price < 0 || price > 999.99) {
+      setStatus('Merch price must be between 0.00 and 999.99.');
+      return;
+    }
 
     state.merchItems.push({ id: crypto.randomUUID(), name, price, image });
     saveConfigLocal('Merch item saved locally.');
@@ -386,39 +424,11 @@ async function pushConfigToGitHub() {
     throw new Error('Enter a GitHub token first.');
   }
 
-  const endpoint = `https://api.github.com/repos/${encodeURIComponent(syncSettings.owner)}/${encodeURIComponent(syncSettings.repo)}/contents/${encodeGitHubPath(syncSettings.path)}`;
-  let existingSha = null;
-
-  const getResponse = await fetch(`${endpoint}?ref=${encodeURIComponent(syncSettings.branch)}`, {
-    headers: githubHeaders(syncSettings.token),
-  });
-
-  if (getResponse.ok) {
-    const existing = await getResponse.json();
-    existingSha = existing.sha || null;
-  } else if (getResponse.status !== 404) {
-    throw new Error(`Unable to check file: HTTP ${getResponse.status}`);
-  }
-
-  const content = encodeBase64(JSON.stringify(state, null, 2));
-  const body = {
+  await putRepoFile({
+    path: syncSettings.path,
     message: 'Update BLD site data from BOH panel',
-    content,
-    branch: syncSettings.branch,
-  };
-
-  if (existingSha) body.sha = existingSha;
-
-  const putResponse = await fetch(endpoint, {
-    method: 'PUT',
-    headers: githubHeaders(syncSettings.token),
-    body: JSON.stringify(body),
+    contentBase64: encodeBase64(JSON.stringify(state, null, 2)),
   });
-
-  if (!putResponse.ok) {
-    const details = await safeJson(putResponse);
-    throw new Error(details?.message || `HTTP ${putResponse.status}`);
-  }
 }
 
 function githubHeaders(token) {
@@ -541,8 +551,8 @@ function renderMenus() {
     .map((item) => `
       <div class="boh-list-row">
         <div class="boh-row-fields">
-          <input type="text" value="${escapeHtml(item.name)}" data-menu-name="${item.id}" aria-label="Menu item name">
-          <input type="number" min="0" step="0.01" value="${Number(item.price).toFixed(2)}" data-menu-price="${item.id}" aria-label="Menu item price">
+          <input class="name-field" type="text" value="${escapeHtml(item.name)}" data-menu-name="${item.id}" aria-label="Menu item name">
+          <input class="price-field" type="number" min="0" max="999.99" step="0.01" value="${Number(item.price).toFixed(2)}" data-menu-price="${item.id}" aria-label="Menu item price">
           <input type="text" value="${escapeHtml(item.image)}" data-menu-image="${item.id}" aria-label="Menu item image">
         </div>
         <div class="boh-row-actions">
@@ -561,6 +571,10 @@ function renderMenus() {
       const image = menuAdminList.querySelector(`[data-menu-image="${id}"]`)?.value.trim() || 'images/breakfast.jpg';
       if (!name || Number.isNaN(price)) {
         setStatus('Menu update needs a valid name and price.');
+        return;
+      }
+      if (price < 0 || price > 999.99) {
+        setStatus('Menu price must be between 0.00 and 999.99.');
         return;
       }
       updateMenuItem(id, { name, price, image });
@@ -595,8 +609,8 @@ function renderMerch() {
     .map((item) => `
       <div class="boh-list-row">
         <div class="boh-row-fields">
-          <input type="text" value="${escapeHtml(item.name)}" data-merch-name="${item.id}" aria-label="Merch item name">
-          <input type="number" min="0" step="0.01" value="${Number(item.price).toFixed(2)}" data-merch-price="${item.id}" aria-label="Merch item price">
+          <input class="name-field" type="text" value="${escapeHtml(item.name)}" data-merch-name="${item.id}" aria-label="Merch item name">
+          <input class="price-field" type="number" min="0" max="999.99" step="0.01" value="${Number(item.price).toFixed(2)}" data-merch-price="${item.id}" aria-label="Merch item price">
           <input type="text" value="${escapeHtml(item.image)}" data-merch-image="${item.id}" aria-label="Merch item image">
         </div>
         <div class="boh-row-actions">
@@ -615,6 +629,10 @@ function renderMerch() {
       const image = merchAdminList.querySelector(`[data-merch-image="${id}"]`)?.value.trim() || 'images/bldlogo.png';
       if (!name || Number.isNaN(price)) {
         setStatus('Merch update needs a valid name and price.');
+        return;
+      }
+      if (price < 0 || price > 999.99) {
+        setStatus('Merch price must be between 0.00 and 999.99.');
         return;
       }
       updateMerchItem(id, { name, price, image });
@@ -749,6 +767,93 @@ function setAttr(id, attr, value) {
 
 function sanitizePhone(phone) {
   return phone.replace(/[^\d+]/g, '');
+}
+
+async function uploadImageFromInput(fileInput, scope) {
+  if (!syncSettings.token) {
+    throw new Error('Enter and save a GitHub token in Sync settings first.');
+  }
+  const file = fileInput.files?.[0];
+  if (!file) {
+    throw new Error('Choose an image file first.');
+  }
+
+  const maxBytes = 8 * 1024 * 1024;
+  if (file.size > maxBytes) {
+    throw new Error('Image is too large. Keep it under 8MB.');
+  }
+
+  const cleanName = sanitizeFileName(file.name || `${scope}-image`);
+  const timestamp = new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 14);
+  const repoPath = `images/uploads/${scope}-${timestamp}-${cleanName}`;
+  const contentBase64 = await readFileAsBase64(file);
+
+  await putRepoFile({
+    path: repoPath,
+    message: `Upload ${scope} image from BOH`,
+    contentBase64,
+  });
+
+  return repoPath;
+}
+
+async function readFileAsBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = String(reader.result || '');
+      const comma = result.indexOf(',');
+      if (comma === -1) {
+        reject(new Error('Could not read file.'));
+        return;
+      }
+      resolve(result.slice(comma + 1));
+    };
+    reader.onerror = () => reject(new Error('Could not read file.'));
+    reader.readAsDataURL(file);
+  });
+}
+
+function sanitizeFileName(name) {
+  return String(name)
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+async function putRepoFile({ path, message, contentBase64 }) {
+  const endpoint = `https://api.github.com/repos/${encodeURIComponent(syncSettings.owner)}/${encodeURIComponent(syncSettings.repo)}/contents/${encodeGitHubPath(path)}`;
+  let existingSha = null;
+
+  const getResponse = await fetch(`${endpoint}?ref=${encodeURIComponent(syncSettings.branch)}`, {
+    headers: githubHeaders(syncSettings.token),
+  });
+
+  if (getResponse.ok) {
+    const existing = await getResponse.json();
+    existingSha = existing.sha || null;
+  } else if (getResponse.status !== 404) {
+    throw new Error(`Unable to check file: HTTP ${getResponse.status}`);
+  }
+
+  const body = {
+    message,
+    content: contentBase64,
+    branch: syncSettings.branch,
+  };
+  if (existingSha) body.sha = existingSha;
+
+  const putResponse = await fetch(endpoint, {
+    method: 'PUT',
+    headers: githubHeaders(syncSettings.token),
+    body: JSON.stringify(body),
+  });
+
+  if (!putResponse.ok) {
+    const details = await safeJson(putResponse);
+    throw new Error(details?.message || `HTTP ${putResponse.status}`);
+  }
 }
 
 function encodeGitHubPath(path) {
