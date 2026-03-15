@@ -3,29 +3,166 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BLD Santa Monica | Investment Pitch</title>
+  <title>BLD Santa Monica | Investor Pitch</title>
+  <meta name="description" content="Investor pitch site for BLD Santa Monica: market opportunity, unit economics, rollout plan, and capital ask.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main class="container">
-    <p class="eyebrow">Investor Preview</p>
-    <h1>BLD Santa Monica</h1>
-    <p class="subtitle">A compelling restaurant concept built for scale, margin, and market buzz.</p>
+  <div class="background-orb orb-one" aria-hidden="true"></div>
+  <div class="background-orb orb-two" aria-hidden="true"></div>
 
-    <section class="card-grid">
-      <article class="card">
-        <h2>Opportunity</h2>
-        <p>Summarize the market gap, neighborhood fit, and customer demand signals.</p>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="BLD Santa Monica home">
+      <span class="brand-mark">BLD</span>
+      <span class="brand-text">Santa Monica</span>
+    </a>
+    <nav>
+      <a href="#opportunity">Opportunity</a>
+      <a href="#economics">Economics</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#ask">Ask</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero reveal">
+      <p class="eyebrow">Investment Preview</p>
+      <h1>All-day coastal dining with premium throughput.</h1>
+      <p class="lead">BLD Santa Monica is designed as a high-margin, all-day neighborhood destination with tourist flow upside and local repeat power.</p>
+      <div class="cta-row">
+        <a class="button primary" href="#ask">View Capital Ask</a>
+        <a class="button ghost" href="#economics">See Unit Model</a>
+      </div>
+    </section>
+
+    <section class="metrics reveal" aria-label="Key performance targets">
+      <article>
+        <p class="metric-value">$2.6M</p>
+        <p class="metric-label">Projected Year 2 AUV</p>
       </article>
-      <article class="card">
-        <h2>Unit Economics</h2>
-        <p>Outline check averages, COGS targets, labor model, and expected cash-on-cash timeline.</p>
+      <article>
+        <p class="metric-value">19%</p>
+        <p class="metric-label">Target Store-Level EBITDA</p>
       </article>
-      <article class="card">
-        <h2>Growth Plan</h2>
-        <p>Describe rollout milestones, brand moat, and capital allocation by phase.</p>
+      <article>
+        <p class="metric-value">13 mo</p>
+        <p class="metric-label">Ramp to Steady-State</p>
+      </article>
+      <article>
+        <p class="metric-value">$950K</p>
+        <p class="metric-label">Initial Capital Raise</p>
       </article>
     </section>
+
+    <section id="opportunity" class="panel reveal">
+      <h2>Market Opportunity</h2>
+      <div class="two-col">
+        <p>Santa Monica has consistent daytime density and high discretionary spend. BLD captures breakfast commuters, lunch professionals, and dinner leisure demand under one operational model.</p>
+        <p>The concept leverages a compact menu architecture with prep overlap to drive speed of service, labor efficiency, and a higher mix of high-margin beverages.</p>
+      </div>
+      <ul class="bullet-list">
+        <li>Foot traffic corridors within 8 minutes of beach and office clusters</li>
+        <li>Daypart diversification reduces volatility versus single-occasion concepts</li>
+        <li>Brandable format for Westside replication after flagship traction</li>
+      </ul>
+    </section>
+
+    <section id="economics" class="panel reveal">
+      <h2>Unit Economics Snapshot</h2>
+      <div class="table-wrap" role="region" aria-label="Unit economics assumptions">
+        <table>
+          <thead>
+            <tr>
+              <th>Line Item</th>
+              <th>Target</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Average Check</td>
+              <td>$31.50</td>
+              <td>Blended across all dayparts</td>
+            </tr>
+            <tr>
+              <td>COGS</td>
+              <td>28.0%</td>
+              <td>Menu engineered for ingredient overlap</td>
+            </tr>
+            <tr>
+              <td>Labor</td>
+              <td>29.5%</td>
+              <td>Cross-trained team model</td>
+            </tr>
+            <tr>
+              <td>Occupancy</td>
+              <td>10.8%</td>
+              <td>Lease + CAM at underwriting target</td>
+            </tr>
+            <tr>
+              <td>Store-Level EBITDA</td>
+              <td>19.0%</td>
+              <td>At mature run-rate</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="timeline" class="panel reveal">
+      <h2>Rollout Timeline</h2>
+      <ol class="timeline">
+        <li>
+          <p class="phase">Phase 1</p>
+          <h3>Pre-Launch (0-3 months)</h3>
+          <p>Finalize site, complete permitting, and lock vendor contracts.</p>
+        </li>
+        <li>
+          <p class="phase">Phase 2</p>
+          <h3>Open + Optimize (4-12 months)</h3>
+          <p>Launch membership offers, refine staffing mix, and tune menu contribution margin.</p>
+        </li>
+        <li>
+          <p class="phase">Phase 3</p>
+          <h3>Replication Prep (12-18 months)</h3>
+          <p>Codify operating playbook and identify second location pipeline.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="ask" class="panel ask reveal">
+      <h2>Capital Ask</h2>
+      <p>Seeking <strong>$950,000</strong> to fund buildout, opening inventory, and launch marketing with a 14-month operating runway buffer.</p>
+      <div class="ask-grid">
+        <article>
+          <h3>Use of Funds</h3>
+          <ul class="bullet-list compact">
+            <li>Buildout + Equipment: 58%</li>
+            <li>Pre-opening + Hiring: 18%</li>
+            <li>Working Capital: 24%</li>
+          </ul>
+        </article>
+        <article>
+          <h3>Investor Materials</h3>
+          <ul class="bullet-list compact">
+            <li>Detailed 36-month forecast</li>
+            <li>Location scorecard + comps</li>
+            <li>Brand expansion thesis</li>
+          </ul>
+        </article>
+      </div>
+      <a class="button primary" href="mailto:investors@bldsantamonica.com">Request Full Deck</a>
+    </section>
   </main>
+
+  <footer>
+    <p>BLD Santa Monica Investor Preview</p>
+    <p>&copy; <span id="year"></span> BLD Santa Monica</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
