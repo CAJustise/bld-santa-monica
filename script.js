@@ -1,4 +1,5 @@
 const STORAGE_KEY = 'bld-site-config-v1';
+const SYNC_SETTINGS_KEY = 'bld-sync-settings-v1';
 
 const defaultConfig = {
   promo: { active: false, text: '', ctaLabel: '', ctaUrl: '' },
@@ -25,41 +26,102 @@ const defaultConfig = {
   ],
 };
 
+const defaultSyncSettings = {
+  owner: 'CAJustise',
+  repo: 'bld-santa-monica',
+  branch: 'main',
+  path: 'site-data.json',
+  token: '',
+};
+
 const drawers = document.querySelectorAll('.drawer');
 const heroOverlay = document.querySelector('.hero-overlay');
 const navLinks = document.querySelectorAll('.nav-link[data-drawer]');
 const bohTrigger = document.getElementById('boh-trigger');
 
-const state = loadConfig();
+let state = structuredClone(defaultConfig);
+let syncSettings = loadSyncSettings();
 
-initDrawers();
-initFeedbackForm();
-initBOHForms();
-renderAll();
+boot();
 
-function loadConfig() {
+async function boot() {
+  state = loadConfigFromLocal();
+
+  initDrawers();
+  initFeedbackForm();
+  initBOHForms();
+  bindSyncForm();
+  renderAll();
+
+  try {
+    const remoteConfig = await fetchPublishedConfig();
+    if (remoteConfig) {
+      state = mergeConfig(remoteConfig);
+      saveConfigLocal();
+      populateBOHFormValues();
+      renderAll();
+      setStatus('Loaded shared settings from GitHub.');
+    }
+  } catch {
+    setStatus('Using local settings on this device.');
+  }
+}
+
+function mergeConfig(input) {
+  return {
+    promo: { ...defaultConfig.promo, ...(input.promo || {}) },
+    menuItems: normalizeItems(input.menuItems, defaultConfig.menuItems),
+    merchItems: normalizeItems(input.merchItems, defaultConfig.merchItems),
+    location: { ...defaultConfig.location, ...(input.location || {}) },
+    socialLinks: normalizeItems(input.socialLinks, defaultConfig.socialLinks),
+  };
+}
+
+function normalizeItems(items, fallback) {
+  if (!Array.isArray(items) || !items.length) return structuredClone(fallback);
+  return items.map((item) => ({ ...item, id: item.id || crypto.randomUUID() }));
+}
+
+function loadConfigFromLocal() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return structuredClone(defaultConfig);
     const parsed = JSON.parse(raw);
-    return {
-      promo: { ...defaultConfig.promo, ...(parsed.promo || {}) },
-      menuItems: Array.isArray(parsed.menuItems) && parsed.menuItems.length ? parsed.menuItems : structuredClone(defaultConfig.menuItems),
-      merchItems: Array.isArray(parsed.merchItems) ? parsed.merchItems : structuredClone(defaultConfig.merchItems),
-      location: { ...defaultConfig.location, ...(parsed.location || {}) },
-      socialLinks: Array.isArray(parsed.socialLinks) && parsed.socialLinks.length ? parsed.socialLinks : structuredClone(defaultConfig.socialLinks),
-    };
+    return mergeConfig(parsed);
   } catch {
     return structuredClone(defaultConfig);
   }
 }
 
-function saveConfig(message) {
+function saveConfigLocal(message) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  if (message) {
-    const status = document.getElementById('boh-status');
-    if (status) status.textContent = message;
+  if (message) setStatus(message);
+}
+
+function loadSyncSettings() {
+  try {
+    const raw = localStorage.getItem(SYNC_SETTINGS_KEY);
+    if (!raw) return structuredClone(defaultSyncSettings);
+    return { ...defaultSyncSettings, ...JSON.parse(raw) };
+  } catch {
+    return structuredClone(defaultSyncSettings);
   }
+}
+
+function saveSyncSettings(message) {
+  localStorage.setItem(SYNC_SETTINGS_KEY, JSON.stringify(syncSettings));
+  if (message) setStatus(message);
+}
+
+function setStatus(message) {
+  const status = document.getElementById('boh-status');
+  if (status) status.textContent = message;
+}
+
+async function fetchPublishedConfig() {
+  const response = await fetch(`./${syncSettings.path}?t=${Date.now()}`, { cache: 'no-store' });
+  if (!response.ok) return null;
+  return response.json();
 }
 
 function initDrawers() {
@@ -140,14 +202,36 @@ function initBOHForms() {
   bindSocialForm();
 }
 
+function populateBOHFormValues() {
+  const promoActive = document.getElementById('promo-active');
+  const promoText = document.getElementById('promo-text');
+  const promoCtaLabel = document.getElementById('promo-cta-label');
+  const promoCtaUrl = document.getElementById('promo-cta-url');
+
+  if (promoActive) promoActive.checked = state.promo.active;
+  if (promoText) promoText.value = state.promo.text;
+  if (promoCtaLabel) promoCtaLabel.value = state.promo.ctaLabel;
+  if (promoCtaUrl) promoCtaUrl.value = state.promo.ctaUrl;
+
+  setFormValue('location-address', state.location.address);
+  setFormValue('location-map-url', state.location.mapUrl);
+  setFormValue('location-phone', state.location.phone);
+  setFormValue('location-email', state.location.email);
+  setFormValue('hours-breakfast-input', state.location.breakfastHours);
+  setFormValue('hours-lunch-input', state.location.lunchHours);
+  setFormValue('hours-dinner-input', state.location.dinnerHours);
+  setFormValue('hours-open-days-input', state.location.openDays);
+}
+
+function setFormValue(id, value) {
+  const input = document.getElementById(id);
+  if (input) input.value = value;
+}
+
 function bindPromoForm() {
   const form = document.getElementById('promo-form');
   if (!form) return;
-
-  document.getElementById('promo-active').checked = state.promo.active;
-  document.getElementById('promo-text').value = state.promo.text;
-  document.getElementById('promo-cta-label').value = state.promo.ctaLabel;
-  document.getElementById('promo-cta-url').value = state.promo.ctaUrl;
+  populateBOHFormValues();
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -155,7 +239,7 @@ function bindPromoForm() {
     state.promo.text = document.getElementById('promo-text').value.trim();
     state.promo.ctaLabel = document.getElementById('promo-cta-label').value.trim();
     state.promo.ctaUrl = document.getElementById('promo-cta-url').value.trim();
-    saveConfig('Promo saved.');
+    saveConfigLocal('Promo saved locally.');
     renderPromo();
   });
 }
@@ -172,7 +256,7 @@ function bindMenuForm() {
     if (!name || Number.isNaN(price)) return;
 
     state.menuItems.push({ id: crypto.randomUUID(), name, price, image });
-    saveConfig('Menu item added.');
+    saveConfigLocal('Menu item saved locally.');
     form.reset();
     renderMenus();
   });
@@ -190,7 +274,7 @@ function bindMerchForm() {
     if (!name || Number.isNaN(price)) return;
 
     state.merchItems.push({ id: crypto.randomUUID(), name, price, image });
-    saveConfig('Merch item added.');
+    saveConfigLocal('Merch item saved locally.');
     form.reset();
     renderMerch();
   });
@@ -199,15 +283,7 @@ function bindMerchForm() {
 function bindLocationForm() {
   const form = document.getElementById('location-form');
   if (!form) return;
-
-  document.getElementById('location-address').value = state.location.address;
-  document.getElementById('location-map-url').value = state.location.mapUrl;
-  document.getElementById('location-phone').value = state.location.phone;
-  document.getElementById('location-email').value = state.location.email;
-  document.getElementById('hours-breakfast-input').value = state.location.breakfastHours;
-  document.getElementById('hours-lunch-input').value = state.location.lunchHours;
-  document.getElementById('hours-dinner-input').value = state.location.dinnerHours;
-  document.getElementById('hours-open-days-input').value = state.location.openDays;
+  populateBOHFormValues();
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -220,7 +296,7 @@ function bindLocationForm() {
     state.location.dinnerHours = document.getElementById('hours-dinner-input').value.trim();
     state.location.openDays = document.getElementById('hours-open-days-input').value.trim();
 
-    saveConfig('Location details saved.');
+    saveConfigLocal('Location saved locally.');
     renderLocation();
   });
 }
@@ -237,27 +313,142 @@ function bindSocialForm() {
     if (!label || !url) return;
 
     state.socialLinks.push({ id: crypto.randomUUID(), label, icon, url });
-    saveConfig('Social link added.');
+    saveConfigLocal('Social link saved locally.');
     form.reset();
     renderSocialLinks();
   });
 }
 
+function bindSyncForm() {
+  setFormValue('sync-owner', syncSettings.owner);
+  setFormValue('sync-repo', syncSettings.repo);
+  setFormValue('sync-branch', syncSettings.branch);
+  setFormValue('sync-path', syncSettings.path);
+  setFormValue('sync-token', syncSettings.token);
+
+  const form = document.getElementById('sync-form');
+  const pullBtn = document.getElementById('sync-pull-btn');
+  const pushBtn = document.getElementById('sync-push-btn');
+  if (!form || !pullBtn || !pushBtn) return;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    syncSettings.owner = document.getElementById('sync-owner').value.trim();
+    syncSettings.repo = document.getElementById('sync-repo').value.trim();
+    syncSettings.branch = document.getElementById('sync-branch').value.trim();
+    syncSettings.path = document.getElementById('sync-path').value.trim();
+    syncSettings.token = document.getElementById('sync-token').value.trim();
+    saveSyncSettings('Sync settings saved on this device.');
+  });
+
+  pullBtn.addEventListener('click', async () => {
+    try {
+      setStatus('Loading config from GitHub...');
+      const data = await pullConfigFromGitHub();
+      state = mergeConfig(data);
+      saveConfigLocal();
+      populateBOHFormValues();
+      renderAll();
+      setStatus('Loaded latest config from GitHub.');
+    } catch (err) {
+      setStatus(`GitHub load failed: ${err.message}`);
+    }
+  });
+
+  pushBtn.addEventListener('click', async () => {
+    try {
+      setStatus('Saving config to GitHub...');
+      await pushConfigToGitHub();
+      setStatus('Saved to GitHub. All devices can now load shared data.');
+    } catch (err) {
+      setStatus(`GitHub save failed: ${err.message}`);
+    }
+  });
+}
+
+async function pullConfigFromGitHub() {
+  const url = `https://api.github.com/repos/${encodeURIComponent(syncSettings.owner)}/${encodeURIComponent(syncSettings.repo)}/contents/${encodeGitHubPath(syncSettings.path)}?ref=${encodeURIComponent(syncSettings.branch)}`;
+  const response = await fetch(url, {
+    headers: githubHeaders(syncSettings.token),
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`);
+  }
+
+  const payload = await response.json();
+  const decoded = decodeBase64(payload.content || '');
+  return JSON.parse(decoded);
+}
+
+async function pushConfigToGitHub() {
+  if (!syncSettings.token) {
+    throw new Error('Enter a GitHub token first.');
+  }
+
+  const endpoint = `https://api.github.com/repos/${encodeURIComponent(syncSettings.owner)}/${encodeURIComponent(syncSettings.repo)}/contents/${encodeGitHubPath(syncSettings.path)}`;
+  let existingSha = null;
+
+  const getResponse = await fetch(`${endpoint}?ref=${encodeURIComponent(syncSettings.branch)}`, {
+    headers: githubHeaders(syncSettings.token),
+  });
+
+  if (getResponse.ok) {
+    const existing = await getResponse.json();
+    existingSha = existing.sha || null;
+  } else if (getResponse.status !== 404) {
+    throw new Error(`Unable to check file: HTTP ${getResponse.status}`);
+  }
+
+  const content = encodeBase64(JSON.stringify(state, null, 2));
+  const body = {
+    message: 'Update BLD site data from BOH panel',
+    content,
+    branch: syncSettings.branch,
+  };
+
+  if (existingSha) body.sha = existingSha;
+
+  const putResponse = await fetch(endpoint, {
+    method: 'PUT',
+    headers: githubHeaders(syncSettings.token),
+    body: JSON.stringify(body),
+  });
+
+  if (!putResponse.ok) {
+    const details = await safeJson(putResponse);
+    throw new Error(details?.message || `HTTP ${putResponse.status}`);
+  }
+}
+
+function githubHeaders(token) {
+  const headers = {
+    Accept: 'application/vnd.github+json',
+    'Content-Type': 'application/json',
+  };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  return headers;
+}
+
 function removeMenuItem(id) {
   state.menuItems = state.menuItems.filter((item) => item.id !== id);
-  saveConfig('Menu item removed.');
+  saveConfigLocal('Menu item removed locally.');
   renderMenus();
 }
 
 function removeMerchItem(id) {
   state.merchItems = state.merchItems.filter((item) => item.id !== id);
-  saveConfig('Merch item removed.');
+  saveConfigLocal('Merch item removed locally.');
   renderMerch();
 }
 
 function removeSocialLink(id) {
   state.socialLinks = state.socialLinks.filter((item) => item.id !== id);
-  saveConfig('Social link removed.');
+  saveConfigLocal('Social link removed locally.');
   renderSocialLinks();
 }
 
@@ -284,7 +475,7 @@ function renderPromo() {
     ctaHtml = `<a href="${escapeHtml(state.promo.ctaUrl)}" target="_blank" rel="noopener">${escapeHtml(state.promo.ctaLabel)}</a>`;
   }
   banner.innerHTML = `<span>${escapeHtml(state.promo.text)}</span>${ctaHtml}`;
-  banner.style.display = 'flex';
+  banner.style.display = 'inline-flex';
 }
 
 function renderMenus() {
@@ -391,7 +582,12 @@ function renderSocialLinks() {
     })
     .join('');
 
-  if (navTarget) navTarget.innerHTML = state.socialLinks.map((item) => `<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener" class="social-icon">${socialIconSvg(item.icon)}</a>`).join('');
+  if (navTarget) {
+    navTarget.innerHTML = state.socialLinks
+      .map((item) => `<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener" class="social-icon" aria-label="${escapeHtml(item.label)}">${socialIconSvg(item.icon)}</a>`)
+      .join('');
+  }
+
   if (contactTarget) contactTarget.innerHTML = linksHtml || '<p>No social links yet.</p>';
   if (shareTarget) shareTarget.innerHTML = linksHtml || '<p>No social links yet.</p>';
 
@@ -440,6 +636,30 @@ function setAttr(id, attr, value) {
 
 function sanitizePhone(phone) {
   return phone.replace(/[^\d+]/g, '');
+}
+
+function encodeGitHubPath(path) {
+  return String(path)
+    .split('/')
+    .filter(Boolean)
+    .map((part) => encodeURIComponent(part))
+    .join('/');
+}
+
+function encodeBase64(str) {
+  return btoa(unescape(encodeURIComponent(str)));
+}
+
+function decodeBase64(str) {
+  return decodeURIComponent(escape(atob(str.replace(/\n/g, ''))));
+}
+
+async function safeJson(response) {
+  try {
+    return await response.json();
+  } catch {
+    return null;
+  }
 }
 
 function escapeHtml(value) {

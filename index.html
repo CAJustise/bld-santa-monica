@@ -304,6 +304,27 @@
           </form>
           <div id="social-admin-list" class="boh-list"></div>
         </section>
+
+        <section class="boh-card boh-card-wide">
+          <h3>Sync Across Devices (GitHub)</h3>
+          <form id="sync-form" class="boh-form">
+            <label for="sync-owner">GitHub owner</label>
+            <input id="sync-owner" type="text" value="CAJustise" required>
+            <label for="sync-repo">GitHub repo</label>
+            <input id="sync-repo" type="text" value="bld-santa-monica" required>
+            <label for="sync-branch">Branch</label>
+            <input id="sync-branch" type="text" value="main" required>
+            <label for="sync-path">Data file path</label>
+            <input id="sync-path" type="text" value="site-data.json" required>
+            <label for="sync-token">GitHub token (repo scope, stored on this device)</label>
+            <input id="sync-token" type="password" placeholder="ghp_...">
+            <button type="submit">Save Sync Settings</button>
+          </form>
+          <div class="sync-actions">
+            <button type="button" id="sync-pull-btn">Load From GitHub</button>
+            <button type="button" id="sync-push-btn">Save To GitHub (All Devices)</button>
+          </div>
+        </section>
       </div>
       <p id="boh-status" class="boh-status" aria-live="polite"></p>
     </div>

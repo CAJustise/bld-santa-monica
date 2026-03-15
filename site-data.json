@@ -1,0 +1,54 @@
+{
+  "promo": {
+    "active": false,
+    "text": "",
+    "ctaLabel": "",
+    "ctaUrl": ""
+  },
+  "menuItems": [
+    {
+      "id": "default-breakfast",
+      "name": "Breakfast",
+      "price": 20,
+      "image": "images/breakfast.jpg"
+    },
+    {
+      "id": "default-lunch",
+      "name": "Lunch",
+      "price": 25,
+      "image": "images/lunch.jpg"
+    },
+    {
+      "id": "default-dinner",
+      "name": "Dinner",
+      "price": 35,
+      "image": "images/dinner.jpg"
+    }
+  ],
+  "merchItems": [
+    {
+      "id": "default-tote",
+      "name": "BLD Tote",
+      "price": 25,
+      "image": "images/bldlogo.png"
+    }
+  ],
+  "location": {
+    "address": "120 Santa Monica Blvd, Santa Monica, CA 90401",
+    "mapUrl": "https://www.google.com/maps/place/120+Santa+Monica+Blvd,+Santa+Monica,+CA+90401",
+    "phone": "(424) 867-5309",
+    "email": "info@bldsantamonica.com",
+    "breakfastHours": "5 AM - 10 AM",
+    "lunchHours": "10 AM - 3 PM",
+    "dinnerHours": "3 PM - 9 PM",
+    "openDays": "Open 7 days a week"
+  },
+  "socialLinks": [
+    {
+      "id": "default-instagram",
+      "label": "Instagram",
+      "icon": "instagram",
+      "url": "https://instagram.com"
+    }
+  ]
+}
