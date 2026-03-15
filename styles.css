@@ -676,6 +676,46 @@ body.lightbox-open {
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
 }
 
+.site-lightbox-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.site-lightbox-arrow.prev {
+  left: 1rem;
+}
+
+.site-lightbox-arrow.next {
+  right: 1rem;
+}
+
+.site-lightbox-count {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.86rem;
+  letter-spacing: 0.04em;
+}
+
 .footer-admin-trigger {
   background: none;
   border: 0;
